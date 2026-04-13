@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IdM Trivia — v3.3.7</title>
+<style>
+  :root {
+    --c1:#4A9ED0; --c2:#2F4994; --c3:#1D1C4B;
+    --ink:#0f172a; --muted:#6b7280;
+    --good:#10b981; --bad:#ef4444; --fortune:#f59e0b;
+    --br:20px;
+    --qSize: clamp(24px, 3vw, 52px);
+    --optSize: clamp(18px, 2.2vw, 36px);
+    --expSize: clamp(20px, 2.4vw, 32px);
+    --barH: 36px;
+    --qFont: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    --optFont: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    --expFont: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    --qColor: var(--ink);
+    --optColor: #fff;
+    --expColor: var(--ink);
+    --qWeight: 900; --optWeight: 800; --expWeight: 600;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    background: linear-gradient(135deg, var(--c1), var(--c2) 45%, var(--c3));
+    color:var(--ink);
+    height:100vh; height:100svh; height:100dvh;
+    overflow:hidden;
+  }
+  .bg-image-layer{position:fixed; inset:0; z-index:-2; background-position:center; background-size:cover; background-repeat:no-repeat; opacity:.18}
+  .pattern{position:fixed; inset:0; pointer-events:none; z-index:-1;
+    background-image: radial-gradient(rgba(255,255,255,.22) 1px, transparent 1.5px);
+    background-size: 14px 14px; opacity:.35;}
+  #fxCanvas{position:fixed; inset:0; pointer-events:none; z-index:20000;}
+  .tint{position:fixed; inset:0; pointer-events:none; opacity:0; transition:opacity .35s ease; z-index:15000;}
+  .tint.good{background:var(--good)} .tint.bad{background:var(--bad)} .tint.fortune{background:var(--fortune)} .tint.on{opacity:.28}
+  .wrap{position:fixed; inset:0; display:flex; flex-direction:column; gap:12px; padding:18px 20px; max-width:min(1600px,96vw); margin:0 auto}
+  .header{display:flex; justify-content:space-between; align-items:center; gap:10px; color:#fff}
+  .btn{border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.15); color:#fff; border-radius:12px; padding:10px 14px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.18)}
+  #view{flex:1 1 auto; display:flex; align-items:center; justify-content:center; overflow:auto; min-height:0}
+  .card{width:100%; background:#ffffffd5; backdrop-filter:blur(4px) saturate(1.05); border:1px solid rgba(255,255,255,.6); border-radius:var(--br); padding:24px; box-shadow:0 12px 36px rgba(0,0,0,.18)}
+  .title{font-size:clamp(22px, 2.6vw, 44px); font-weight:900; margin:0 0 10px}
+  .muted{color:#334155; font-size:clamp(14px, 1.05vw, 18px)}
+  .question{font-size:var(--qSize); line-height:1.2; margin-bottom:14px; font-family:var(--qFont); color:var(--qColor); font-weight:var(--qWeight)}
+  .options{display:grid; gap:14px; grid-template-columns:repeat(2, minmax(0,1fr))}
+  @media (max-width: 900px){ .options{grid-template-columns:1fr;} }
+  .opt{display:flex; align-items:center; gap:16px; width:100%; font-size:var(--optSize);
+       background:#fff; border:2px solid #cbd5e1; border-radius:16px; padding:18px; text-align:left; cursor:pointer;
+       color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.45);
+       transition:opacity .15s ease, filter .15s ease, border-color .15s ease, box-shadow .15s ease;}
+  .opt:hover{filter:brightness(.98); border-color:#94a3b8}
+  .opt-label{ font-family:var(--optFont); color:var(--optColor); font-weight:var(--optWeight); }
+  .opt-green{background:linear-gradient(135deg,#10b981,#065f46)} .opt-red{background:linear-gradient(135deg,#ef4444,#7f1d1d)}
+  .opt-blue{background:linear-gradient(135deg,#3b82f6,#1e40af)} .opt-yellow{background:linear-gradient(135deg,#f59e0b,#b45309)}
+  .opt.dim{opacity:.35; filter:saturate(.85)}
+  .opt-chosen-correct{box-shadow:0 0 0 3px rgba(34,197,94,.95) inset, 0 0 0 2px rgba(34,197,94,.95), 0 6px 20px rgba(0,0,0,.25); border-color:#34d399}
+  .opt-chosen-wrong{box-shadow:0 0 0 3px rgba(239,68,68,.95) inset, 0 0 0 2px rgba(239,68,68,.85), 0 6px 20px rgba(0,0,0,.25); border-color:#fca5a5}
+  .dot{width:14px;height:14px;border-radius:999px;background:#94a3b8} .dot.good{background:#10b981} .dot.bad{background:#ef4444}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .progress{height:var(--barH); background:rgba(15,23,42,.2); border-radius:999px; overflow:hidden; margin-top:12px;
+    border:3px solid rgba(255,255,255,.85); box-shadow: inset 0 2px 5px rgba(0,0,0,.28), 0 0 14px rgba(255,255,255,.75)}
+  .bar{height:100%; width:0; background:linear-gradient(90deg,#22c55e,#84cc16); position:relative}
+  .bar::after{content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg, rgba(255,255,255,.3) 0, rgba(255,255,255,.3) 6px, transparent 6px, transparent 12px); mix-blend-mode:overlay;}
+  .explain{margin-top:18px; padding:22px; border-radius:16px; border:2px dashed #cbd5e1; background:#f8fafc;
+    font-size:var(--expSize); line-height:1.4; font-family:var(--expFont); color:var(--expColor); font-weight:var(--expWeight)}
+  .keybox{width:30px;height:30px;border-radius:999px;border:3px solid rgba(255,255,255,.95); background-clip:padding-box; box-shadow:0 2px 6px rgba(0,0,0,.25), inset 0 0 0 2px rgba(0,0,0,.06)}
+  .kb-red{background:#ef4444}.kb-green{background:#10b981}.kb-blue{background:#3b82f6}.kb-yellow{background:#f59e0b}
+  .modal{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; z-index:9990}
+  .grid{display:grid; grid-template-columns: 1fr 2fr; gap:12px; align-items:center}
+  .grid-4{display:grid; grid-template-columns: repeat(4, 1fr); gap:8px}
+  .input{padding:10px 12px; border-radius:10px; border:1px solid #cbd5e1; font-size:16px; width:100%}
+  .capture{cursor:text; background:#fff; min-height:40px}
+  .toast{position:fixed; right:18px; bottom:14px; background:#ffffffdd; border:1px solid #cbd5e1; border-radius:12px; padding:12px 14px; box-shadow:0 12px 32px rgba(0,0,0,.18); font-size:14px; max-width:480px; z-index:16000}
+  .toast h4{margin:0 0 6px; font-size:16px} .toast pre{margin:6px 0 0; white-space:pre-wrap; word-break:break-word; max-height:220px; overflow:auto; font-size:12px; background:#f8fafc; padding:8px; border-radius:8px}
+  /* consolidated rows */
+  .setting-row{display:grid; grid-template-columns: 220px 1fr 120px minmax(160px, 240px) 110px; gap:10px; align-items:center; margin-bottom:8px}
+  @media (max-width: 980px){ .setting-row{grid-template-columns: 1fr; } }
+</style>
+<style>
+  /* Floating Home/Menu button */
+  .home-btn {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 12000;
+    border-radius: 10px;
+    opacity: 0.92;
+    backdrop-filter: blur(4px);
+  }
+  .home-btn:hover { opacity: 1; }
+</style>
+
+<style>
+  .dice-fab{
+    position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+    z-index:12000; border-radius:10px; opacity:.92; backdrop-filter:blur(4px);
+    padding:8px 12px;
+  }
+  .dice-fab:hover{opacity:1}
+</style>
+
+
+<style>
+  .die{display:inline-block; width:min(40vw,240px); height:min(40vw,240px);}
+  .die svg{width:100%; height:100%;}
+  @keyframes rollShake {
+    0%{ transform:rotate(-6deg) translate(0,0); filter:blur(0px); }
+    25%{ transform:rotate(4deg) translate(2px,-1px); filter:blur(.4px); }
+    50%{ transform:rotate(-3deg) translate(-2px,1px); filter:blur(.3px); }
+    75%{ transform:rotate(3deg) translate(1px,-2px); filter:blur(.4px); }
+    100%{ transform:rotate(0deg) translate(0,0); filter:blur(0px); }
+  }
+  .die.rolling{ animation: rollShake .28s linear infinite; }
+</style>
+
+</head>
+<body>
+  <canvas id="fxCanvas"></canvas>
+  <div class="bg-image-layer" id="bgLayer"></div>
+  <div class="pattern"></div>
+  <div class="tint" id="tint"></div>
+
+  <div class="wrap">
+    <div class="header">
+      <h1 style="margin:0; font-size:clamp(24px, 3vw, 40px); font-weight:900;">IdM Trivia</h1>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <label for="importInput" class="btn">Importar contenido</label>
+        <input id="importInput" type="file" accept="application/json" style="position:absolute; left:-9999px; opacity:0; width:0; height:0">
+        <button id="assetsBtn" class="btn">Assets</button>
+        <button id="qoptsBtn" class="btn">Opciones de Preguntas</button>
+        <button id="settingsBtn" class="btn">Configuración</button>
+      
+        <button id="connectBtn" class="btn">Conectar</button></div>
+    </div>
+    <div id="view"></div>
+  </div>
+
+  <!-- Assets (background) -->
+  <div class="modal" id="assetsModal">
+    <div class="card" style="width:min(820px, 92vw)">
+      <div class="row"><h3 class="title" style="margin:0">Assets</h3><button class="btn" id="assetsClose">Cerrar</button></div>
+      <div class="grid" style="font-size:16px; margin-top:10px">
+        <div>Imagen de fondo</div><input type="file" id="bgInput" accept="image/*">
+        <div>Opacidad</div><input type="range" id="bgOpacity" min="0" max="100" value="18" style="width:260px">
+        <div>Ajuste</div><select id="bgFit" class="input" style="max-width:200px"><option value="cover" selected>Cover</option><option value="contain">Contain</option></select>
+      </div>
+      <div class="muted" style="margin-top:10px">Los assets se aplican en esta pestaña. (No se guardan tras recargar).</div>
+    </div>
+  </div>
+
+  <!-- Opciones de Preguntas -->
+  <div class="modal" id="qoptsModal">
+    <div class="card" style="width:min(880px, 94vw)">
+      <div class="row"><h3 class="title" style="margin:0">Opciones de Preguntas</h3><button class="btn" id="qoptsClose">Cerrar</button></div>
+      <div class="grid" style="margin-top:10px">
+        <div>Duración del temporizador (segundos)</div><input type="number" id="timerInput" class="input" min="1" max="180" step="1">
+        <div>Grosor barra de tiempo (px)</div><input type="number" id="barH" class="input" min="8" max="100" step="1">
+        <div>Confeti — cantidad</div><input type="number" id="confCount" class="input" min="10" max="1000" step="10">
+        <div>Confeti — tamaño (px)</div><input type="number" id="confSize" class="input" min="2" max="20" step="1">
+        <div>Confeti — dispersión (0.3–2.5)</div><input type="number" id="confSpread" class="input" min="0.3" max="2.5" step="0.1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuración general -->
+  <div class="modal" id="settingsModal">
+    <div class="card" style="width:min(1100px, 98vw)">
+      <div class="row"><h3 class="title" style="margin:0">Configuración</h3><button class="btn" id="settingsClose">Cerrar</button></div>
+
+      <!-- Consolidated typography rows -->
+      <div class="setting-row" style="margin-top:6px">
+        <div>Título de pregunta</div>
+        <input type="text" id="ffQ" class="input" placeholder="ej: 'Poppins', system-ui">
+        <input type="number" id="szQ" class="input" min="16" max="120" step="1" placeholder="auto">
+        <div style="display:flex; gap:8px; align-items:center">
+          <input type="color" id="colQ" class="input" style="width:60px; padding:6px">
+          <input type="text" id="hexQ" class="input" placeholder="#0f172a">
+        </div>
+        <label style="display:flex; align-items:center; gap:6px"><input type="checkbox" id="boldQ" checked> Negrita</label>
+      </div>
+
+      <div class="setting-row">
+        <div>Opciones de respuesta</div>
+        <input type="text" id="ffOpt" class="input" placeholder="ej: 'Poppins', system-ui">
+        <input type="number" id="szOpt" class="input" min="14" max="96" step="1" placeholder="auto">
+        <div style="display:flex; gap:8px; align-items:center">
+          <input type="color" id="colOpt" class="input" style="width:60px; padding:6px">
+          <input type="text" id="hexOpt" class="input" placeholder="#ffffff">
+        </div>
+        <label style="display:flex; align-items:center; gap:6px"><input type="checkbox" id="boldOpt" checked> Negrita</label>
+      </div>
+
+      <div class="setting-row">
+        <div>Explicación</div>
+        <input type="text" id="ffExp" class="input" placeholder="ej: 'Poppins', system-ui">
+        <input type="number" id="szExp" class="input" min="14" max="96" step="1" placeholder="auto">
+        <div style="display:flex; gap:8px; align-items:center">
+          <input type="color" id="colExp" class="input" style="width:60px; padding:6px">
+          <input type="text" id="hexExp" class="input" placeholder="#0f172a">
+        </div>
+        <label style="display:flex; align-items:center; gap:6px"><input type="checkbox" id="boldExp"> Negrita</label>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <div>Tecla: Opción Múltiple</div><input type="text" id="keyMC" class="input capture" placeholder="pulsa una tecla">
+        <div>Tecla: Verdadero o Falso</div><input type="text" id="keyTF" class="input capture" placeholder="pulsa una tecla">
+        <div>Tecla: Fortuna</div><input type="text" id="keyFortune" class="input capture" placeholder="pulsa una tecla">
+        <div>Tecla: Mala Suerte</div><input type="text" id="keyBad" class="input capture" placeholder="pulsa una tecla">
+        <div>Teclas de respuesta (OM) — 1ª / 2ª / 3ª / 4ª</div>
+        <div class="grid-4">
+          <input type="text" id="keyA1" class="input capture" placeholder="opción 1">
+          <input type="text" id="keyA2" class="input capture" placeholder="opción 2">
+          <input type="text" id="keyA3" class="input capture" placeholder="opción 3">
+          <input type="text" id="keyA4" class="input capture" placeholder="opción 4">
+        </div>
+        <div>Teclas (VF) — Verdadero / Falso</div>
+        <div class="grid-4" style="grid-template-columns:repeat(2,1fr)">
+          <input type="text" id="keyT" class="input capture" placeholder="Verdadero">
+          <input type="text" id="keyF" class="input capture" placeholder="Falso">
+        </div>
+        <div>Nuevo ítem / Reiniciar</div>
+<div class="grid-2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+  <input type="text" id="keyNew" class="input capture" placeholder="Enter">
+  <input type="text" id="keyReset" class="input capture" placeholder="Space">
+</div>
+<div>Tecla: Dado</div>
+<div style="display:flex;align-items:center;gap:8px">
+  <input type="text" id="keyDice" class="input capture" placeholder="pulsa una tecla">
+  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="diceAuto" checked> Dado automático</label>
+</div>
+<div>Tecla: Dado 2</div>
+        <input type="text" id="keyDice2" class="input capture" placeholder="pulsa una tecla">
+<div>Duración del dado (ms)</div><input type="number" id="diceDur" class="input" min="100" step="50" placeholder="400">
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" style="display:none">
+    <h4>Resultado de importación</h4>
+    <div id="toastMsg">—</div>
+    <pre id="toastDetails"></pre>
+  </div>
+
+<script>
+(function(){
+  // Toast
+  const toast=document.getElementById('toast'), msg=document.getElementById('toastMsg'), det=document.getElementById('toastDetails');
+  function showToast(m,d){ msg.textContent=m||''; det.textContent=d||''; toast.style.display='block'; setTimeout(()=>toast.style.display='none',8000); }
+
+  // Confetti canvas
+  const cvs=document.getElementById('fxCanvas'), ctx=cvs.getContext('2d');
+  function resize(){ cvs.width=innerWidth; cvs.height=innerHeight; } addEventListener('resize',resize); resize();
+  const confKey='gm_confetti_v1', confDefault={count:260,size:6,spread:1.3};
+  let confettiCfg=load(confKey, confDefault);
+  function confetti(mult=1){ const cfg=confettiCfg; const N=Math.round((cfg.count||260)*(mult||1)); const size=cfg.size||6; const spread=cfg.spread||1.3;
+    const colors=['#fde047','#34d399','#60a5fa','#f472b6','#f87171','#a78bfa','#fbbf24','#22d3ee'];
+    const parts=[]; const sx=cvs.width/2, sy=cvs.height*0.24;
+    for(let i=0;i<N;i++){ const ang=(Math.random()*Math.PI - Math.PI/2)*(0.8*spread); const speed=(5+Math.random()*7)*spread;
+      const vx=Math.cos(ang)*speed*(0.9+Math.random()*0.4), vy=Math.sin(ang)*speed*(0.9+Math.random()*0.4) - (5+Math.random()*4)*spread;
+      parts.push({x:sx+(Math.random()-0.5)*(220*spread), y:sy+(Math.random()-0.5)*(40*spread), vx, vy, g:0.25+Math.random()*0.08, life:110+Math.random()*50,
+                  s:size+Math.random()*size*0.9, c:colors[(Math.random()*colors.length)|0], spin:(Math.random()-0.5)*0.5, a:Math.random()*Math.PI*2, sh:Math.random()<0.4?'c':(Math.random()<0.7?'s':'t')}); }
+    let raf; (function frame(){ ctx.clearRect(0,0,cvs.width,cvs.height); for(const p of parts){ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.a+=p.spin; p.life--;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.globalAlpha=Math.max(0, Math.min(1, p.life/110)); ctx.fillStyle=p.c; const s=p.s;
+        if(p.sh==='c'){ ctx.beginPath(); ctx.arc(0,0,s*0.6,0,Math.PI*2); ctx.fill(); } else if(p.sh==='t'){ ctx.beginPath(); ctx.moveTo(0,-s*0.6); ctx.lineTo(s*0.6,s*0.6); ctx.lineTo(-s*0.6,s*0.6); ctx.closePath(); ctx.fill(); } else { ctx.fillRect(-s/2,-s/2,s,s); }
+        ctx.restore(); } for(let i=parts.length-1;i>=0;i--){ if(parts[i].life<=0 || parts[i].y>cvs.height+20) parts.splice(i,1); }
+      if(parts.length>0) raf=requestAnimationFrame(frame); else { cancelAnimationFrame(raf); ctx.clearRect(0,0,cvs.width,cvs.height); } })(); }
+
+  // Local storage helpers
+  function load(k, fallback){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):fallback; }catch{ return fallback; } }
+  function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+  // State
+  const defaultBindings={mode:{mc:'z',tf:'x',fortune:'c',bad:'v'}, answer:{mc1:'1',mc2:'2',mc3:'3',mc4:'4',tfTrue:'1',tfFalse:'2'}, control:{reset:' ',new:'Enter'}};
+  let bindings=load('gm_bindings_v1', defaultBindings);
+  let timerSecs=parseInt(localStorage.getItem('gm_timerSecs_v1')||'20',10); if(!Number.isFinite(timerSecs)) timerSecs=20;
+  const sizes=load('gm_sizes_v1', {});
+  const styleCfg=load('gm_style_v1', { q:{font:'',color:'#0f172a',bold:true}, opt:{font:'',color:'#ffffff',bold:true}, exp:{font:'',color:'#0f172a',bold:false} });
+
+  // Apply styles
+  function applySizes(){ const r=document.documentElement.style; if(sizes.q) r.setProperty('--qSize', sizes.q+'px'); if(sizes.opt) r.setProperty('--optSize', sizes.opt+'px'); if(sizes.exp) r.setProperty('--expSize', sizes.exp+'px'); if(sizes.bar) r.setProperty('--barH', sizes.bar+'px'); }
+  function applyStyle(){ const r=document.documentElement.style;
+    r.setProperty('--qFont', styleCfg.q.font || "system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial");
+    r.setProperty('--optFont', styleCfg.opt.font || "system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial");
+    r.setProperty('--expFont', styleCfg.exp.font || "system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial");
+    r.setProperty('--qColor', styleCfg.q.color || '#0f172a');
+    r.setProperty('--optColor', styleCfg.opt.color || '#ffffff');
+    r.setProperty('--expColor', styleCfg.exp.color || '#0f172a');
+    r.setProperty('--qWeight', styleCfg.q.bold ? '900' : '700');
+    r.setProperty('--optWeight', styleCfg.opt.bold ? '800' : '600');
+    r.setProperty('--expWeight', styleCfg.exp.bold ? '700' : '500'); }
+  applySizes(); applyStyle();
+
+  // Dice config
+  const diceKeyDefault = 'd';
+  let diceCfg = load('gm_dice_v1', {auto:true, dur:400});
+  let dice2Cfg = load('gm_dice2_v1', {auto:true});
+  let diceColor = '#0f172a';
+
+  // extend default bindings with dice
+  if(!bindings.mode) bindings.mode = {};
+  if(!bindings.mode.dice) bindings.mode.dice = diceKeyDefault;
+  if(!bindings.mode.dice2) bindings.mode.dice2 = 'f';
+
+  // Dice state
+  let diceResult = null, diceRolling = false;
+
+  
+  // SVG dice helpers
+  
+  function svgDice(face, color){
+    const W=200, R=26;
+    const bg = color || '#ffffff'; // default to white
+    // choose pip color based on bg brightness; force dark pips on white
+    function isLight(hex){
+      const m = /^#?([0-9a-f]{6})$/i.exec(hex||''); if(!m) return false;
+      const n = parseInt(m[1],16); const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+      const L = 0.2126*r + 0.7152*g + 0.0722*b;
+      return L > 170;
+    }
+    const pip = isLight(bg) ? '#0f172a' : '#ffffff';
+    const spots = {
+      1:[[1,1]],
+      2:[[0,0],[2,2]],
+      3:[[0,0],[1,1],[2,2]],
+      4:[[0,0],[2,0],[0,2],[2,2]],
+      5:[[0,0],[2,0],[1,1],[0,2],[2,2]],
+      6:[[0,0],[2,0],[0,1],[2,1],[0,2],[2,2]]
+    };
+    const grid = spots[face]||spots[1];
+    const cell=W/4, cx=(i)=>cell*(i+1), cy=(j)=>cell*(j+1), r=cell*0.22;
+    let pips=''; for(const [i,j] of grid){ pips+=`<circle cx="${cx(i)}" cy="${cy(j)}" r="${r}" fill="${pip}" />`; }
+    return `<svg viewBox="0 0 ${W} ${W}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="die-${face}">
+      <defs><filter id="ds"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="rgba(0,0,0,.25)"/></filter></defs>
+      <rect x="8" y="8" width="${W-16}" height="${W-16}" rx="${R}" ry="${R}" fill="${bg}" filter="url(#ds)"/>
+      ${pips}
+    </svg>`;
+  }
+
+  let diceAnimRAF=null, diceAnimStart=0, diceTempFace=1;
+
+  function updateDiceView(rolling){
+    const box = document.getElementById('diceVis');
+    if(!box) return;
+    const face = rolling ? diceTempFace : (diceResult==null?1:diceResult);
+    box.innerHTML = svgDice(face, diceColor);
+    box.classList.toggle('rolling', !!rolling);
+  }
+
+  function Dice(){
+    const status = diceRolling ? 'Lanzando…' : (diceResult==null ? (diceCfg.auto?'—':'Esperando al jugador (1/2/3/4)…') : 'Resultado');
+    const body = el('div',{style:'text-align:center'},
+      el('div',{class:'question', style:'font-size:clamp(26px,3.2vw,56px)'}, '🎲 Dado'),
+      el('div',{id:'diceVis', class:'die', style:'margin:16px auto'}),
+      el('div',{class:'muted', style:'text-align:center'},
+        diceCfg.auto ? 'Automático: se lanza al activar.' : 'Controlado por jugador: pulsa 1,2,3 o 4 para lanzar.'
+      )
+    );
+    // ensure the current view is drawn after mount
+    setTimeout(()=>updateDiceView(diceRolling),0);
+    return frame('Dado', status, body);
+  }
+
+  
+  function rollDice(){
+  if(diceRolling) return;
+  diceRolling = true; render();
+  const dur = Math.max(100, parseInt(diceCfg.dur||400,10));
+  const t0 = performance.now();
+  // Randomized face cycling (non-sequential) with jittered swap intervals
+  const minStep = 0.06, maxStep = 0.09; // seconds between swaps (~60–90ms)
+  let nextSwap = t0;
+  function randFaceNot(prev){
+    let f;
+    do { f = 1 + Math.floor(Math.random()*6); } while (f === prev);
+    return f;
+  }
+  diceTempFace = randFaceNot(diceTempFace||1);
+  updateDiceView(true);
+  function step(t){
+    const elapsed = t - t0;
+    if (t >= nextSwap){
+      diceTempFace = randFaceNot(diceTempFace);
+      updateDiceView(true);
+      const stepSec = minStep + Math.random()*(maxStep - minStep);
+      nextSwap = t + stepSec*1000;
+    }
+    if (elapsed < dur){
+      requestAnimationFrame(step);
+    }else{
+      const n = 1 + Math.floor(Math.random()*6);
+      diceResult = n;
+      diceRolling = false;
+      updateDiceView(false);
+      try{ sendCmd('DICE:ROLL:'+n); }catch(e){}
+      flash('good');
+      render();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+
+  
+  function showDice(){
+    try{ sendCmd('MODE:DICE'); }catch(e){};
+    mode='dice'; diceResult=null; diceRolling=false; stopTimer(); celebrate=false; boo=false;
+    // in automatic mode, reset to white body; in manual, color set by pressed key
+    diceColor = diceCfg.auto ? '#ffffff' : '#0f172a';
+    render(true);
+    setTimeout(()=>updateDiceView(false),0);
+    if(diceCfg.auto){ rollDice(); }
+  }
+  function Dice2(){
+    const status = diceRolling ? 'Lanzando…' : (diceResult==null ? (dice2Cfg.auto?'—':'Esperando al jugador (1/2/3/4)…') : 'Resultado');
+    const body = el('div',{style:'text-align:center'},
+      el('div',{class:'question', style:'font-size:clamp(26px,3.2vw,56px)'}, '🎲 Dado'),
+      el('div',{id:'diceVis', class:'die', style:'margin:16px auto'}),
+      el('div',{class:'muted', style:'text-align:center'},
+        diceCfg.auto ? 'Automático: se lanza al activar.' : 'Controlado por jugador: pulsa 1,2,3 o 4 para lanzar.'
+      )
+    );
+    setTimeout(()=>updateDiceView(diceRolling),0);
+    return frame('Dado', status, body);
+  }
+
+  function rollDice2(){
+    if(diceRolling) return;
+    diceRolling = true; render();
+    const dur = Math.max(100, parseInt(diceCfg.dur||400,10));
+    const t0 = performance.now();
+    const minStep = 0.06, maxStep = 0.09;
+    let nextSwap = t0;
+    function randFaceNot(prev){
+      let f;
+      do { f = 1 + Math.floor(Math.random()*6); } while (f === prev);
+      return f;
+    }
+    diceTempFace = randFaceNot(diceTempFace||1);
+    updateDiceView(true);
+    function step(t){
+      const elapsed = t - t0;
+      if (t >= nextSwap){
+        diceTempFace = randFaceNot(diceTempFace);
+        updateDiceView(true);
+        const stepSec = minStep + Math.random()*(maxStep - minStep);
+        nextSwap = t + stepSec*1000;
+      }
+      if (elapsed < dur){
+        requestAnimationFrame(step);
+      }else{
+        const n = 4 + Math.floor(Math.random()*3); // 4..6
+        diceResult = n;
+        diceRolling = false;
+        updateDiceView(false);
+        try{ sendCmd('DICE2:ROLL:'+n); }catch(e){}
+        flash('good');
+        render();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function showDice2(){
+    try{ sendCmd('MODE:DICE2'); }catch(e){};
+    mode='dice2'; diceResult=null; diceRolling=false; stopTimer(); celebrate=false; boo=false;
+    diceColor = diceCfg.auto ? '#ffffff' : '#0f172a';
+    render(true);
+    setTimeout(()=>updateDiceView(false),0);
+    if(diceCfg.auto){ rollDice2(); }
+  }
+
+
+
+  
+
+
+
+  // Pools & non-repeat window
+  let mcPool=[{id:"mc1",prompt:"Which gas is produced at the cathode in water electrolysis?",options:["Oxygen","Hydrogen","Nitrogen","Carbon dioxide"],correctIndex:1,explanation:"In water electrolysis, H₂ forms at the cathode and O₂ at the anode."}];
+  let tfPool=[{id:"tf1",prompt:"True/False: The sun is a star.",answerTrue:true,explanation:"The Sun is a G-type main-sequence star."}];
+  let fortunePool=[{id:"f1",title:"¡Fortuna!",text:"¡Gana +2 puntos! 🎉"}];
+  let badLuckPool=[{id:"b1",title:"Mala Suerte…",text:"Pierdes 1 punto. 💥"}];
+  const recentMC=[], recentTF=[];
+  function pick(poolLen, recent, win=5){
+    if (poolLen <= 1) { recent.push(0); if (recent.length>1) recent.shift(); return 0; }
+    const maxBlock=Math.min(win, Math.max(1, poolLen-1));
+    const exclude=new Set(recent.slice(-maxBlock)); const candidates=[];
+    for(let i=0;i<poolLen;i++){ if(!exclude.has(i)) candidates.push(i); }
+    if(!candidates.length){ const last=recent[recent.length-1]; for(let i=0;i<poolLen;i++){ if(i!==last) candidates.push(i); } }
+    const choice=candidates[(Math.random()*candidates.length)|0]; recent.push(choice); while(recent.length>maxBlock) recent.shift(); return choice;
+  }
+
+  // UI helpers
+  const view=document.getElementById('view'), tint=document.getElementById('tint');
+  function el(tag, attrs={}, ...kids){ const e=document.createElement(tag); for(const k in attrs){ if(k==='class') e.className=attrs[k]; else if(k.startsWith('on')) e.addEventListener(k.slice(2).toLowerCase(), attrs[k]); else if(k==='style') e.style.cssText=attrs[k]; else e.setAttribute(k, attrs[k]); } for(const c of kids){ if(c==null) continue; if(typeof c==='string') e.appendChild(document.createTextNode(c)); else e.appendChild(c); } return e; }
+  function flash(kind){ tint.className='tint '+kind+' on'; setTimeout(()=>tint.classList.remove('on'),350); }
+  function StatusDot(s){ const d=el('span',{class:'dot'+(s==='good'?' good':s==='bad'?' bad':'')}); return d; }
+  const kbClasses=['kb-green','kb-red','kb-blue','kb-yellow']; const optClasses=['opt-green','opt-red','opt-blue','opt-yellow'];
+
+  // Timer
+  let mode='idle', idx=null, tfidx=null, fidx=null, bidx=null, choice=null, locked=false, celebrate=false, boo=false, timeUp=false, timerId=null, start=0;
+  function startTimer(){ clearInterval(timerId); timeUp=false; start=Date.now(); timerId=setInterval(()=>{ const left=Math.max(0, timerSecs - (Date.now()-start)/1000); if(left<=0){ clearInterval(timerId); if((mode==='mc'||mode==='tf')&&!locked){ locked=true; boo=true; timeUp=true; try{sendCmd('ANS:WRONG');}catch(e){}  flash('bad'); render(); setTimeout(()=>{boo=false; render();},700); } } updateBar(left / timerSecs); }, 100); }
+  function stopTimer(){ clearInterval(timerId); updateBar(1); }
+  function updateBar(frac){ const bar=document.querySelector('.bar'); if(!bar) return; const p=Math.max(0, Math.min(1, frac==null?1:frac))*100; bar.style.width=p+'%';
+    bar.style.background = (p>50)?'linear-gradient(90deg,#22c55e,#84cc16)': (p>25)?'linear-gradient(90deg,#f59e0b,#f97316)':'linear-gradient(90deg,#ef4444,#b91c1c)'; }
+
+  // Screens
+  function buttons(){ return el('div',{class:'options',style:'margin-top:10px'},
+    el('button',{class:'opt opt-blue', onclick:showMC, style:'font-weight:800'},'Opción Múltiple (', bindings.mode.mc.toUpperCase(),')'),
+    el('button',{class:'opt opt-green', onclick:showTF, style:'font-weight:800'},'Verdadero o Falso (', bindings.mode.tf.toUpperCase(),')'),
+    el('button',{class:'opt opt-yellow', onclick:showFortune, style:'font-weight:800'},'Fortuna (', bindings.mode.fortune.toUpperCase(),')'),
+    el('button',{class:'opt opt-red', onclick:showBad, style:'font-weight:800'},'Mala Suerte (', bindings.mode.bad.toUpperCase(),')')
+  );}
+  function frame(title, status, body){
+    return el('div',{class:'card'+(celebrate?' pop':'' )},
+      el('div',{class:'row'}, el('div',{class:'title'}, title), el('div',{class:'muted',style:'display:flex;align-items:center;gap:8px'}, StatusDot(celebrate?'good':boo?'bad':''), status||'')),
+      (mode==='mc'||mode==='tf') ? el('div',{}, el('div',{class:'progress'}, el('div',{class:'bar'}))) : null,
+      el('div',{style:'margin-top:12px'}, body),
+      el('div',{class:'row',style:'margin-top:12px'}, el('div',{class:'muted'},'Reiniciar (Space)'),
+        el('div',{class:'muted'}, (mode==='mc')?el('button',{class:'btn',onclick:showMC},'Nueva Opción Múltiple (Enter)'): (mode==='tf')?el('button',{class:'btn',onclick:showTF},'Nuevo Verdadero/Falso (Enter)'):(mode==='fortune')?el('button',{class:'btn',onclick:showFortune},'Nueva Fortuna (Enter)'):(mode==='bad')?el('button',{class:'btn',onclick:showBad},'Nueva Mala Suerte (Enter)'):null)
+      )
+    );
+  }
+  function Idle(){ return el('div',{class:'card'}, el('div',{class:'title'},'Casilleros'), el('div',{class:'muted'},'Usa los botones grandes o tus teclas configuradas.'), buttons()); }
+  function MC(){ const q=mcPool[idx]; const st=locked?(timeUp?'¡Tiempo!':(choice===q.correctIndex?'¡Correcto!':'Incorrecto')):'Esperando respuesta…';
+    const grid=el('div',{class:'options'});
+    q.options.forEach((opt,i)=>{ const chosen=choice===i, correct=i===q.correctIndex;
+      let cls='opt '+optClasses[i%optClasses.length]; if(locked && !correct) cls+=' dim'; if(chosen) cls+=' '+(correct?'opt-chosen-correct':'opt-chosen-wrong');
+      grid.appendChild(el('button',{class:cls, onclick:()=>pickMC(i)}, el('span',{class:'keybox '+kbClasses[i%kbClasses.length]}), el('span',{class:'opt-label'}, String(opt)))); });
+    const kids=[ el('div',{class:'question'}, q.prompt), grid ]; if(locked && q.explanation) kids.push(el('div',{class:'explain'}, q.explanation));
+    return frame('Opción Múltiple', st, el('div',{}, ...kids));
+  }
+  function TF(){ const q=tfPool[tfidx]; const correct=(choice!=null)&&((choice===0)===q.answerTrue);
+    const st=locked?(timeUp?'¡Tiempo!':(correct?'¡Correcto!':'Incorrecto')):'Esperando respuesta…';
+    const grid=el('div',{class:'options'},
+      el('button',{class:'opt opt-green '+(choice===0?(q.answerTrue?'opt-chosen-correct':'opt-chosen-wrong'):'') + (locked && !q.answerTrue?' dim':''), onclick:()=>pickTF(0)}, el('span',{class:'keybox kb-green'}), el('span',{class:'opt-label'},'Verdadero')),
+      el('button',{class:'opt opt-red '+(choice===1?(!q.answerTrue?'opt-chosen-correct':'opt-chosen-wrong'):'') + (locked && q.answerTrue?' dim':''), onclick:()=>pickTF(1)}, el('span',{class:'keybox kb-red'}), el('span',{class:'opt-label'},'Falso'))
+    );
+    const kids=[ el('div',{class:'question'}, q.prompt), grid ]; if(locked && q.explanation) kids.push(el('div',{class:'explain'}, q.explanation));
+    return frame('Verdadero o Falso', st, el('div',{}, ...kids));
+  }
+  function Fortune(){ const f=fortunePool[fidx]; return frame('Fortuna','', el('div',{style:'text-align:center;color:#0f172a'}, el('div',{class:'question',style:'font-size:clamp(26px,3.2vw,56px)'}, '🎊 '+f.title), el('div',{style:'font-size:clamp(20px,2.2vw,36px);margin-top:8px'}, f.text))); }
+  function Bad(){ const b=badLuckPool[bidx]; return frame('Mala Suerte','', el('div',{style:'text-align:center;color:#0f172a'}, el('div',{class:'question',style:'font-size:clamp(26px,3.2vw,56px)'}, '💥 '+b.title), el('div',{style:'font-size:clamp(20px,2.2vw,36px);margin-top:8px'}, b.text))); }
+  function render(fresh=false){ view.innerHTML=''; let node = mode==='mc'?MC(): mode==='tf'?TF(): mode==='fortune'?Fortune(): mode==='bad'?Bad(): mode==='dice'?Dice(): mode==='dice2'?Dice2(): Idle(); view.appendChild(node); if(fresh) updateBar(1); }
+
+  function showMC(){ try{sendCmd("MODE:MC");}catch(e){}  mode='mc'; idx=pick(mcPool.length, recentMC, 5); choice=null; locked=false; timeUp=false; celebrate=false; boo=false; startTimer(); render(true); }
+  function showTF(){ try{sendCmd("MODE:TF");}catch(e){}  mode='tf'; tfidx=pick(tfPool.length, recentTF, 5); choice=null; locked=false; timeUp=false; celebrate=false; boo=false; startTimer(); render(true); }
+  function showFortune(){ try{sendCmd("MODE:FORTUNE");}catch(e){}  mode='fortune'; fidx=(Math.random()*fortunePool.length)|0; stopTimer(); celebrate=true; boo=false; flash('fortune'); confetti(1.1); render(true); setTimeout(()=>{celebrate=false; render();},800); }
+  function showBad(){ try{sendCmd("MODE:BAD");}catch(e){}  mode='bad'; bidx=(Math.random()*badLuckPool.length)|0; stopTimer(); boo=true; celebrate=false; flash('bad'); render(true); setTimeout(()=>{boo=false; render();},600); }
+  function pickMC(i){ if(locked||idx==null) return; choice=i; locked=true; stopTimer(); const ok=i===mcPool[idx].correctIndex; try{sendCmd(ok?"ANS:CORRECT":"ANS:WRONG");}catch(e){}  celebrate=ok; boo=!ok; flash(ok?'good':'bad'); if(ok) confetti(); render(); setTimeout(()=>{celebrate=false; boo=false; render();},700); }
+  function pickTF(i){ if(locked||tfidx==null) return; choice=i; locked=true; stopTimer(); const isTrue=i===0; const ok=isTrue===tfPool[tfidx].answerTrue; try{sendCmd(ok?"ANS:CORRECT":"ANS:WRONG");}catch(e){}  celebrate=ok; boo=!ok; flash(ok?'good':'bad'); if(ok) confetti(); render(); setTimeout(()=>{celebrate=false; boo=false; render();},700); }
+
+  // Keyboard
+  function key(e){ return e.key===' ' ? ' ' : (e.key.length===1?e.key.toLowerCase():e.key); }
+  function match(ek, bk){ const a=ek===' '? ' ' : (ek.length===1?ek.toLowerCase():ek); const b=bk===' ' ? ' ' : (bk.length===1?bk.toLowerCase():bk); return a===b; }
+  addEventListener('keydown', (e)=>{
+    if(e.repeat) return;
+    const k=key(e);
+    if(match(k, bindings.mode.mc)) return void showMC();
+    if(match(k, bindings.mode.dice)) return void showDice();
+    if(match(k, bindings.mode.dice2)) return void showDice2();
+    if(match(k, bindings.mode.tf)) return void showTF();
+    if(match(k, bindings.mode.fortune)) return void showFortune();
+    if(match(k, bindings.mode.bad)) return void showBad();
+    if(match(k, bindings.control.new)){ if(mode==='mc') showMC(); else if(mode==='tf') showTF(); else if(mode==='fortune') showFortune(); else if(mode==='bad') showBad(); return; }
+    if(match(k, bindings.control.reset)){ mode='idle'; stopTimer(); render(); return; }
+    if(mode==='dice'){ if(!diceCfg.auto && !diceRolling && diceResult==null){ if(match(k, bindings.answer.mc1)){ diceColor='#22c55e'; return void rollDice(); } if(match(k, bindings.answer.mc2)){ diceColor='#ef4444'; return void rollDice(); } if(match(k, bindings.answer.mc3)){ diceColor='#3b82f6'; return void rollDice(); } if(match(k, bindings.answer.mc4)){ diceColor='#facc15'; return void rollDice(); } } }
+    if(mode==='dice2'){ if(!dice2Cfg.auto && !diceRolling && diceResult==null){ if(match(k, bindings.answer.mc1)){ diceColor='#22c55e'; return void rollDice2(); } if(match(k, bindings.answer.mc2)){ diceColor='#ef4444'; return void rollDice2(); } if(match(k, bindings.answer.mc3)){ diceColor='#3b82f6'; return void rollDice2(); } if(match(k, bindings.answer.mc4)){ diceColor='#facc15'; return void rollDice2(); } } }
+    if(mode==='mc'){ if(match(k, bindings.answer.mc1)) return void pickMC(0); if(match(k, bindings.answer.mc2)) return void pickMC(1); if(match(k, bindings.answer.mc3)) return void pickMC(2); if(match(k, bindings.answer.mc4)) return void pickMC(3); }
+    if(mode==='tf'){ if(match(k, bindings.answer.tfTrue)) return void pickTF(0); if(match(k, bindings.answer.tfFalse)) return void pickTF(1); }
+  });
+
+  // Settings modals
+  const qoptsBtn=document.getElementById('qoptsBtn'), qoptsModal=document.getElementById('qoptsModal'), qoptsClose=document.getElementById('qoptsClose');
+  qoptsBtn.onclick=()=>{ document.getElementById('timerInput').value=String(timerSecs); document.getElementById('barH').value=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--barH'))||36; document.getElementById('confCount').value=confettiCfg.count; document.getElementById('confSize').value=confettiCfg.size; document.getElementById('confSpread').value=confettiCfg.spread; qoptsModal.style.display='flex'; };
+  qoptsClose.onclick=()=> qoptsModal.style.display='none'; qoptsModal.addEventListener('click',(e)=>{ if(e.target===qoptsModal) qoptsModal.style.display='none'; });
+  document.getElementById('timerInput').onchange=()=>{ const n=Math.max(1, Math.min(180, parseInt(document.getElementById('timerInput').value||'20',10))); timerSecs=n; localStorage.setItem('gm_timerSecs_v1', String(n)); };
+  document.getElementById('barH').onchange=()=>{ const v=parseInt(document.getElementById('barH').value||'36',10); if(Number.isFinite(v)){ sizes.bar=v; document.documentElement.style.setProperty('--barH', v+'px'); } else { delete sizes.bar; document.documentElement.style.removeProperty('--barH'); } save('gm_sizes_v1', sizes); };
+  function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+  document.getElementById('confCount').onchange=()=>{ confettiCfg.count=clamp(parseInt(document.getElementById('confCount').value||260,10)||260,10,1000); save(confKey, confettiCfg); };
+  document.getElementById('confSize').onchange=()=>{ confettiCfg.size=clamp(parseInt(document.getElementById('confSize').value||6,10)||6,2,20); save(confKey, confettiCfg); };
+  document.getElementById('confSpread').onchange=()=>{ confettiCfg.spread=clamp(parseFloat(document.getElementById('confSpread').value||1.3)||1.3,0.3,2.5); save(confKey, confettiCfg); };
+
+  const settingsBtn=document.getElementById('settingsBtn'), settingsModal=document.getElementById('settingsModal'), settingsClose=document.getElementById('settingsClose');
+  settingsBtn.onclick=()=>{
+    document.getElementById('szQ').value=sizes.q||''; document.getElementById('szOpt').value=sizes.opt||''; document.getElementById('szExp').value=sizes.exp||'';
+    document.getElementById('ffQ').value=styleCfg.q.font||''; document.getElementById('colQ').value=styleCfg.q.color||'#0f172a'; document.getElementById('hexQ').value=document.getElementById('colQ').value; document.getElementById('boldQ').checked=!!styleCfg.q.bold;
+    document.getElementById('ffOpt').value=styleCfg.opt.font||''; document.getElementById('colOpt').value=styleCfg.opt.color||'#ffffff'; document.getElementById('hexOpt').value=document.getElementById('colOpt').value; document.getElementById('boldOpt').checked=!!styleCfg.opt.bold;
+    document.getElementById('ffExp').value=styleCfg.exp.font||''; document.getElementById('colExp').value=styleCfg.exp.color||'#0f172a'; document.getElementById('hexExp').value=document.getElementById('colExp').value; document.getElementById('boldExp').checked=!!styleCfg.exp.bold;
+    // keys
+    const fields={mc:'keyMC',tf:'keyTF',fortune:'keyFortune',bad:'keyBad',dice:'keyDice',dice2:'keyDice2',mc1:'keyA1',mc2:'keyA2',mc3:'keyA3',mc4:'keyA4',tfTrue:'keyT',tfFalse:'keyF',new:'keyNew',reset:'keyReset'};
+    for(const k in fields){ const el=document.getElementById(fields[k]); const val=(bindings.mode[k]||bindings.answer[k]||bindings.control[k]||''); el.value=(val===' ')?'Space':(val.length===1?val.toUpperCase():val); }
+    document.getElementById('diceAuto').checked=!!diceCfg.auto;
+    dice2Cfg.auto = !!diceCfg.auto; save('gm_dice2_v1', dice2Cfg);
+    const dd=document.getElementById('diceDur'); if(dd){ dd.value = diceCfg.dur||400; }
+    settingsModal.style.display='flex';
+  };
+  settingsClose.onclick=()=> settingsModal.style.display='none';
+  settingsModal.addEventListener('click',(e)=>{ if(e.target===settingsModal) settingsModal.style.display='none'; });
+
+  function wireSize(id,key,css){ const el=document.getElementById(id); el.onchange=()=>{ const v=parseInt(el.value||''); if(Number.isFinite(v)){ sizes[key]=v; document.documentElement.style.setProperty(css, v+'px'); } else { delete sizes[key]; document.documentElement.style.removeProperty(css); } save('gm_sizes_v1', sizes); }; }
+  wireSize('szQ','q','--qSize'); wireSize('szOpt','opt','--optSize'); wireSize('szExp','exp','--expSize');
+
+  function syncColor(colorId, hexId){ const c=document.getElementById(colorId), h=document.getElementById(hexId);
+    c.addEventListener('input',()=>{ h.value=c.value; applyFromInputs(); });
+    h.addEventListener('change',()=>{ let v=h.value.trim(); if(!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)){ h.value=c.value; } else { c.value=v; } applyFromInputs(); }); }
+  syncColor('colQ','hexQ'); syncColor('colOpt','hexOpt'); syncColor('colExp','hexExp');
+
+  function applyFromInputs(){
+    styleCfg.q.font=document.getElementById('ffQ').value.trim(); styleCfg.q.color=document.getElementById('colQ').value; styleCfg.q.bold=document.getElementById('boldQ').checked;
+    styleCfg.opt.font=document.getElementById('ffOpt').value.trim(); styleCfg.opt.color=document.getElementById('colOpt').value; styleCfg.opt.bold=document.getElementById('boldOpt').checked;
+    styleCfg.exp.font=document.getElementById('ffExp').value.trim(); styleCfg.exp.color=document.getElementById('colExp').value; styleCfg.exp.bold=document.getElementById('boldExp').checked;
+    save('gm_style_v1', styleCfg); applyStyle(); render();
+  }
+  ['ffQ','colQ','hexQ','boldQ','ffOpt','colOpt','hexOpt','boldOpt','ffExp','colExp','hexExp','boldExp'].forEach(id=>{
+    const el=document.getElementById(id); el.addEventListener('change', applyFromInputs); if(el.type==='color') el.addEventListener('input', applyFromInputs);
+  });
+
+  function capture(id, path){ const el=document.getElementById(id);
+    el.addEventListener('keydown', (e)=>{ e.preventDefault(); e.stopPropagation(); const k=(e.key===' ')?' ':(e.key.length===1?e.key.toLowerCase():e.key); set(path, k); el.value = (k===' ')?'Space':(k.length===1?k.toUpperCase():k); save('gm_bindings_v1', bindings); });
+    el.addEventListener('input', ()=>{ const t=el.value.trim(); const k=(t.toLowerCase()==='space')?' ':(t.length===1?t.toLowerCase():t); set(path,k); save('gm_bindings_v1', bindings); }); }
+  function set(path, val){ const [a,b]=path.split('.'); if(a==='mode') bindings.mode[b]=val; else if(a==='answer') bindings.answer[b]=val; else bindings.control[b]=val; }
+  capture('keyMC','mode.mc'); capture('keyTF','mode.tf'); capture('keyFortune','mode.fortune'); capture('keyBad','mode.bad');
+  capture('keyA1','answer.mc1'); capture('keyA2','answer.mc2'); capture('keyA3','answer.mc3'); capture('keyA4','answer.mc4');
+  capture('keyDice','mode.dice');
+  capture('keyDice2','mode.dice2');
+  document.getElementById('diceAuto').addEventListener('change', ()=>{ diceCfg.auto=!!document.getElementById('diceAuto').checked; save('gm_dice_v1', diceCfg); dice2Cfg.auto = !!diceCfg.auto; save('gm_dice2_v1', dice2Cfg); });
+  const dd=document.getElementById('diceDur'); if(dd){ dd.addEventListener('change', ()=>{ let v=parseInt(dd.value,10); if(!Number.isFinite(v)) v=400; v=Math.max(100,v); diceCfg.dur=v; save('gm_dice_v1', diceCfg); }); }
+  capture('keyT','answer.tfTrue'); capture('keyF','answer.tfFalse'); capture('keyNew','control.new'); capture('keyReset','control.reset');
+
+  
+  // --- Robust JSON import (manual) ---
+  document.getElementById('importInput').addEventListener('change', async (e)=>{
+    const f=e.target.files[0]; if(!f) return; await importFile(f);
+  });
+  addEventListener('dragover',(e)=>e.preventDefault());
+  addEventListener('drop', async (e)=>{
+    e.preventDefault();
+    const f=e.dataTransfer.files && e.dataTransfer.files[0];
+    if(!f) return;
+    if(!/\.json$/i.test(f.name)) return showToast('Debes soltar un archivo .json');
+    await importFile(f);
+  });
+
+  function normalizeBool(v){ if(typeof v==='boolean') return v;
+    if(typeof v==='string'){ const t=v.trim().toLowerCase(); if(t==='true') return true; if(t==='false') return false; }
+    if(typeof v==='number') return v!==0;
+    return null; }
+  function arrStr(a){ return Array.isArray(a)?a.map(x=>x==null?'':String(x)):null; }
+  function normMC(o,w){
+    if(!o) return null;
+    const prompt=o.prompt!=null?String(o.prompt):null; let options=arrStr(o.options);
+    let ciRaw=o.correctIndex!=null?o.correctIndex:(o.correct!=null?o.correct:null); let ci=null;
+    if(ciRaw!=null){ let n=(typeof ciRaw==='string')?parseInt(ciRaw,10):ciRaw; if(Number.isFinite(n)) ci=n; }
+    if(prompt==null||!options||options.length<2||ci==null) return null;
+    if(ci===options.length){ w.push('correctIndex era 1-based, se ajusta'); ci=ci-1; }
+    if(ci>=options.length) return null;
+    return {id:String(o.id||Math.random().toString(16).slice(2)), prompt, options, correctIndex:ci, explanation:o.explanation!=null?String(o.explanation):undefined};
+  }
+  function normTF(o){
+    if(!o) return null;
+    const prompt=o.prompt!=null?String(o.prompt):null; const b=normalizeBool(o.answerTrue!=null?o.answerTrue:o.answer);
+    if(prompt==null||b==null) return null;
+    return {id:String(o.id||Math.random().toString(16).slice(2)), prompt, answerTrue:b, explanation:o.explanation!=null?String(o.explanation):undefined};
+  }
+  function normCard(o){
+    if(!o) return null;
+    const title=o.title!=null?String(o.title):null; const text=o.text!=null?String(o.text):null;
+    if(!title||!text) return null;
+    return {id:String(o.id||Math.random().toString(16).slice(2)), title, text};
+  }
+  function keyN(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
+
+  async function importFile(file){
+    try{
+      const raw = JSON.parse(await file.text());
+      const map = {};
+      Object.keys(raw||{}).forEach(k=> map[keyN(k)]=raw[k]);
+
+      // Accept several shapes
+      const mcSrc = map['multiplechoice']||map['mc']||map['opcionmultiple']||map['om']||map['omultiples']||map['preguntas']||map['questions'];
+      const tfSrc = map['truefalse']||map['tf']||map['verdaderoofalso']||map['vf']||map['truefalsequestions'];
+      const fSrc  = map['fortune']||map['fortuna']||map['good']||map['suerte']||map['fortunes'];
+      const bSrc  = map['badluck']||map['bad']||map['malasuerte']||map['penalty']||map['penalizaciones'];
+
+      const warn=[];
+      const mc=Array.isArray(mcSrc)?mcSrc.map(o=>normMC(o,warn)).filter(Boolean):[];
+      const tf=Array.isArray(tfSrc)?tfSrc.map(o=>normTF(o)).filter(Boolean):[];
+      const fo=Array.isArray(fSrc)?fSrc.map(o=>normCard(o)).filter(Boolean):[];
+      const bl=Array.isArray(bSrc)?bSrc.map(o=>normCard(o)).filter(Boolean):[];
+
+      if(mc.length) mcPool = mc;
+      if(tf.length) tfPool = tf;
+      if(fo.length) fortunePool = fo;
+      if(bl.length) badLuckPool  = bl;
+
+      showToast('Importación exitosa', `OM: ${mc.length} • VF: ${tf.length} • Fortuna: ${fo.length} • Mala Suerte: ${bl.length}${warn.length? '\\nAvisos: '+warn.join('; '):''}`);
+      render(true);
+    }catch(err){
+      console.error(err);
+      showToast('No se pudo importar', (err && err.message) || String(err));
+    }
+  }
+
+
+  // Assets modal wiring
+  const assetsBtn=document.getElementById('assetsBtn'), assetsModal=document.getElementById('assetsModal'), assetsClose=document.getElementById('assetsClose');
+  const bgLayer=document.getElementById('bgLayer'); const bgInput=document.getElementById('bgInput'); const bgOpacity=document.getElementById('bgOpacity'); const bgFit=document.getElementById('bgFit');
+  assetsBtn.onclick=()=>{ assetsModal.style.display='flex'; };
+  assetsClose.onclick=()=> assetsModal.style.display='none';
+  assetsModal.addEventListener('click',(e)=>{ if(e.target===assetsModal) assetsModal.style.display='none'; });
+  bgInput.addEventListener('change',(e)=>{ const f=e.target.files[0]; if(!f) return; const url=URL.createObjectURL(f); bgLayer.style.backgroundImage=`url("${url}")`; });
+  bgOpacity.addEventListener('input',()=>{ const v=Math.max(0, Math.min(100, parseInt(bgOpacity.value||"18",10))); bgLayer.style.opacity=String(v/100); });
+  bgFit.addEventListener('change',()=>{ const v=bgFit.value; bgLayer.style.backgroundSize=(v==='contain'?'contain':'cover'); });
+
+  render(true);
+})();</script>
+
+  
+<div id="diceBar" class="dice-fab" style="display:flex;gap:8px;align-items:center;justify-content:center;"><button id="diceBtn" class="btn" title="Dado (D)">🎲 Dado</button><button id="dice2Btn" class="btn" title="Dado especial (F)">🎲 Dado 2</button></div>
+<button id="homeBtn" class="btn home-btn" title="Volver al inicio (Espacio)">Inicio</button>
+
+<script>
+(function(){
+  const btn = document.getElementById('homeBtn');
+  if(btn){
+    btn.addEventListener('click', function(){
+      // Dispatch a synthetic Space keydown so it goes through the same handler
+      const ev = new KeyboardEvent('keydown', { key: ' ', code: 'Space' });
+      window.dispatchEvent(ev);
+    });
+  }
+})();
+</script>
+
+
+<script id="serial-bridge">
+(function(){
+  console.log("[serial-bridge] load");
+  window.sendCmd = async function(s){ console.warn("[serial-bridge] not connected; ignoring", s); };
+  let port=null, writer=null, connected=false;
+  async function connectPad(){
+    if(!('serial' in navigator)){ alert('Web Serial no disponible. Usa Chrome/Edge en HTTPS o localhost.'); return; }
+    try{
+      port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 115200 });
+      writer = port.writable.getWriter();
+      connected = true;
+      window.sendCmd = async function(s){
+        try{
+          await writer.write(new TextEncoder().encode(String(s)+"\n"));
+          console.log("[sendCmd]", s);
+        }catch(e){ console.warn("[serial-bridge] write failed", e); }
+      };
+      try{ await window.sendCmd("HELLO"); }catch(e){}
+      if (window.showToast) showToast('Pad conectado','Puerto serie abierto.');
+      console.log("[serial-bridge] connected");
+    }catch(err){
+      console.error("[serial-bridge] connect error", err);
+      if (window.showToast) showToast('No se pudo conectar', (err && err.message) || String(err));
+    }
+  }
+  const btn = document.getElementById('connectBtn');
+  if (btn) btn.addEventListener('click', connectPad);
+})();
+</script>
+
+
+<!-- LED Idle Controls -->
+<style>
+  #idlePanelWrap{position:fixed;right:16px;bottom:74px;z-index:99998;}
+  #idlePanelBtn{padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.85);backdrop-filter:blur(4px);cursor:pointer;font-weight:600}
+  #idlePanel{display:none;position:fixed;right:16px;bottom:120px;z-index:99999;width:300px;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border:1px solid rgba(0,0,0,.15);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:12px}
+  #idlePanel h3{margin:0 0 8px 0;font-size:14px}
+  #idlePanel .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  #idlePanel .row input{flex:1 1 auto;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,.2);font-family:inherit}
+  #idlePanel .row button{padding:6px 10px;border-radius:8px;border:1px solid rgba(0,0,0,.2);background:#f7f7f7;cursor:pointer}
+  #idlePanel .small{font-size:12px;opacity:.8;margin-top:4px}
+</style>
+<div id="idlePanelWrap"><button id="idlePanelBtn" class="btn">LED Idle</button></div>
+<div id="idlePanel">
+  <h3>Configurar modo Idle</h3>
+  <div class="row">
+    <button id="idleOnBtn">Encender</button>
+    <button id="idleOffBtn">Apagar</button>
+    <button id="idleResetBtn">Reset</button>
+  </div>
+  <div class="row">
+    <input id="idleGroupsInput" placeholder="Grupos (CSV) — ej: 5,3,3,3,..." />
+    <button id="idleGroupsSend">Enviar</button>
+  </div>
+  <div class="row">
+    <input id="idleColorsInput" placeholder="Colores (CSV) — ej: G,B,R,Y,V,..." />
+    <button id="idleColorsSend">Enviar</button>
+    <button id="idleColorsRand">Aleatorio</button>
+  </div>
+  <div class="small">Consejo: Conectar primero, luego envía los comandos. Sumatoria de grupos = #LEDs.</div>
+</div>
+<script>
+(function(){
+  const btn = document.getElementById('idlePanelBtn');
+  const panel = document.getElementById('idlePanel');
+  if(btn && panel){
+    btn.addEventListener('click', () => {
+      panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
+    });
+  }
+  function needConn(){ if(typeof window.sendCmd!=='function'){ alert('Conecta el pad primero.'); return true;} return false; }
+  const on  = document.getElementById('idleOnBtn');
+  const off = document.getElementById('idleOffBtn');
+  const rst = document.getElementById('idleResetBtn');
+  on  && on .addEventListener('click', () => { if(needConn()) return; sendCmd('IDLE:ON'); });
+  off && off.addEventListener('click', () => { if(needConn()) return; sendCmd('IDLE:OFF'); });
+  rst && rst.addEventListener('click', () => { if(needConn()) return; sendCmd('IDLE:RESET'); });
+  const gIn = document.getElementById('idleGroupsInput');
+  const gGo = document.getElementById('idleGroupsSend');
+  const cIn = document.getElementById('idleColorsInput');
+  const cGo = document.getElementById('idleColorsSend');
+  gGo && gGo.addEventListener('click', () => {
+    if(needConn()) return;
+    const v = (gIn && gIn.value || '').trim();
+    if(!v){ alert('Escribe los grupos (CSV)'); return; }
+    sendCmd('IDLE:GROUPS='+v);
+  });
+  cGo && cGo.addEventListener('click', () => {
+    if(needConn()) return;
+    const v = (cIn && cIn.value || '').trim();
+    if(!v){ alert('Escribe los colores (CSV)'); return; }
+    sendCmd('IDLE:COLORS='+v);
+  });
+
+  
+  const cRand = document.getElementById('idleColorsRand');
+  cRand && cRand.addEventListener('click', ()=>{
+    // Generate 20-letter sequence with rules:
+    // 1) pos1 = 'V' and pos15 = 'V' (only V allowed positions)
+    // 2) Others are from R,B,G,Y
+    // 3) No consecutive repeats
+    // 4) pos4 != pos16, pos12 != pos20
+    const choices = ['R','B','G','Y'];
+    const out = Array(20).fill(null);
+    out[0] = 'V';   // position 1
+    out[14] = 'V';  // position 15
+
+    function pick(prev, extraNot=null){
+      let opts = choices.filter(x => x!==prev && x!==extraNot);
+      if(!opts.length) opts = choices.filter(x => x!==prev);
+      const r = Math.floor(Math.random()*opts.length);
+      return opts[r];
+    }
+
+    // Fill positions 2..20 (1-based), skipping 15 (already 'V')
+    for(let i=2;i<=20;i++){
+      if(i===15){ continue; }
+      let extra = null;
+      if(i===16) extra = out[3];   // pos4
+      if(i===20) extra = out[11];  // pos12
+      const prev = out[i-2];       // previous char
+      out[i-1] = pick(prev, extra);
+    }
+
+    // Safety: ensure no V elsewhere (choices excludes V)
+    for(let i=1;i<20;i++){ if(i!==14 && out[i]==='V'){ out[i]='R'; } }
+
+    const csv = out.join(',');
+    const cIn = document.getElementById('idleColorsInput');
+    if(cIn){ cIn.value = csv; }
+  });
+
+})();</script>
+
+
+<script>
+(function(){
+  const btn = document.getElementById('diceBtn');
+  if(btn){ btn.addEventListener('click', ()=>{ try{ showDice(); }catch(e){ console.warn(e); } }); }
+  const b2 = document.getElementById('dice2Btn');
+  if(b2){ b2.addEventListener('click', ()=>{ try{ showDice2(); }catch(e){ console.warn(e); } }); }
+})();
+</script>
+
+
+<script>
+// Reflow settings layout: keep "Nuevo ítem / Reiniciar" on the same row as Enter/Space,
+// and keep "Tecla: Dado" + input + "Dado automático" checkbox on the same row.
+(function(){
+  function reflowSettings(){
+    const modal = document.getElementById('settingsModal');
+    if(!modal) return;
+    const row = modal.querySelector('.setting-row:last-of-type');
+    if(!row) return;
+    const getDivWithText = (text)=>{
+      return Array.from(row.children).find(n => n.tagName==='DIV' && (n.textContent||'').trim().toLowerCase().startsWith(text));
+    };
+    const diceInput = document.getElementById('keyDice');
+    const diceAuto = document.getElementById('diceAuto');
+    const diceAutoLabel = diceAuto ? diceAuto.closest('label') : null;
+    const diceAutoDiv = getDivWithText('dado automático');
+    const diceKeyDiv = getDivWithText('tecla: dado');
+    const newResetDiv = getDivWithText('nuevo ítem / reiniciar');
+    const newResetGrid = row.querySelector('#keyNew')?.closest('.grid-4');
+
+    // Put Enter/Space grid immediately after "Nuevo ítem / Reiniciar" label
+    if(newResetDiv && newResetGrid){
+      newResetDiv.after(newResetGrid);
+      newResetGrid.style.gridColumn = 'span 4';
+    }
+
+    // Keep Dado label + input + checkbox on same row
+    if(diceInput && diceAutoLabel){
+      // Remove the extra text-only DIV for "Dado automático" if present
+      if(diceAutoDiv){ diceAutoDiv.remove(); }
+      // Ensure label text is "Dado automático"
+      const ck = diceAutoLabel.querySelector('input[type=checkbox]');
+      if(ck){ diceAutoLabel.textContent = ''; diceAutoLabel.appendChild(ck); diceAutoLabel.append(' Dado automático'); }
+      // Place the checkbox label right after the dice input to share the row
+      diceInput.insertAdjacentElement('afterend', diceAutoLabel);
+      diceAutoLabel.style.marginLeft = '8px';
+    }
+  }
+  // Run after DOM and also each time the modal opens
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', reflowSettings);
+  }else{
+    reflowSettings();
+  }
+  // Hook opening of settings
+  const settingsBtn = document.getElementById('settingsBtn');
+  if(settingsBtn){
+    settingsBtn.addEventListener('click', ()=> setTimeout(reflowSettings, 0));
+  }
+})();
+</script>
+
+</body>
+</html>

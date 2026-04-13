@@ -1,0 +1,1134 @@
+{
+  "mc": [
+    {
+      "id": "BIOPROA_Q1",
+      "prompt": "¿Qué aplicaciones tiene el compost?",
+      "options": [
+        "Aditivo alimenticio",
+        "Fabricación de plásticos",
+        "Mejorador de suelos",
+        "Ninguna de las anteriores"
+      ],
+      "correctIndex": 2,
+      "explanation": "El compost enriquece el suelo con materia orgánica y nutrientes, mejora su estructura y retención de agua, y favorece el desarrollo de cultivos."
+    },
+    {
+      "id": "BIOPROA_Q2",
+      "prompt": "¿Qué tipo de residuos se pueden compostar?",
+      "options": [
+        "Cáscaras de frutas y verduras",
+        "Restos de café y té",
+        "Hojas secas y pasto",
+        "Todos los anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Todos estos residuos pueden ser compostados, ya que son residuos de origen orgánico y biodegradables, lo que permite su descomposición mediante compostaje."
+    },
+    {
+      "id": "BIOPROA_Q3",
+      "prompt": "¿Qué condición es necesaria para que ocurra la digestión anaerobia?",
+      "options": [
+        "Presencia de oxígeno",
+        "Alta presión",
+        "Ausencia de oxígeno",
+        "Luz solar"
+      ],
+      "correctIndex": 2,
+      "explanation": "Es un proceso de descomposición de materia orgánica llevado a cabo por microorganismos que actúan en ausencia de oxígeno."
+    },
+    {
+      "id": "BIOPROA_Q4",
+      "prompt": "La digestión anaerobia genera:",
+      "options": [
+        "Petróleo",
+        "Biogás",
+        "Aceite",
+        "Alimentos"
+      ],
+      "correctIndex": 1,
+      "explanation": "Este proceso genera biogás, un gas rico en metano que puede utilizarse como combustible para generar energía."
+    },
+    {
+      "id": "BIOPROA_Q5",
+      "prompt": "¿Por qué es importante remover nutrientes como nitrógeno y fósforo de las aguas residuales?",
+      "options": [
+        "Porque generan mal olor en el agua",
+        "Porque aumentan la dureza del agua",
+        "Porque contaminan ríos y causan exceso de algas",
+        "Porque cambian el color del agua"
+      ],
+      "correctIndex": 2,
+      "explanation": "El exceso de estos nutrientes provoca crecimiento de algas y reduce el oxígeno del agua, afectando la vida acuática."
+    },
+    {
+      "id": "BIOPROA_Q6",
+      "prompt": "¿Cuál de estos nutrientes es clave remover en aguas residuales para evitar la contaminación de cuerpos de agua?",
+      "options": [
+        "Oxígeno",
+        "Cloro",
+        "Nitrógeno y fósforo",
+        "Hierro y calcio"
+      ],
+      "correctIndex": 2,
+      "explanation": "La remoción de nitrógeno y fósforo evita la proliferación de algas, deterioro del agua y reducción de oxígeno que afecta la vida acuática."
+    },
+    {
+      "id": "BIOPROA_Q7",
+      "prompt": "¿Qué se hace con el fósforo que se remueve del agua?",
+      "options": [
+        "Se quema",
+        "Se usa como fertilizante",
+        "Se convierte en gas",
+        "Se entierra sin tratar"
+      ],
+      "correctIndex": 1,
+      "explanation": "El fósforo removido del agua puede recuperarse y aprovecharse como fertilizante, ya que es un nutriente esencial para el crecimiento de las plantas."
+    },
+    {
+      "id": "DIMM_Q1",
+      "prompt": "¿Para qué es utilizada la piedra caliza en Uruguay?",
+      "options": [
+        "Fabricación de cal",
+        "Fabricación de cemento",
+        "Corrección de suelos",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Se usa para producir cal y cemento, y también para regular el pH del suelo gacias al carbonato de calcio contenido en ella."
+    },
+    {
+      "id": "DIMM_Q2",
+      "prompt": "¿Cuál es el objetivo del procesamiento de minerales?",
+      "options": [
+        "Extraer minerales del suelo",
+        "Transformar minerales en metales de alto valor",
+        "Liberar y concentrar minerales de interés",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 2,
+      "explanation": "Dentro de la minería hay procesos de extracción, procesamiento de minerales y refinamiento."
+    },
+    {
+      "id": "DIMM_Q3",
+      "prompt": "¿Cuántas toneladas de cemento se producen en Uruguay anualmente?",
+      "options": [
+        "Entre 0 y 30.000 ton",
+        "Entre 100.000 y 250.000 ton",
+        "Entre 400.000 y 700.000 ton",
+        "Más de 800.000 de ton"
+      ],
+      "correctIndex": 3,
+      "explanation": "Se estima en el entorno de las 900.000 toneladas anuales."
+    },
+    {
+      "id": "DIMM_Q4",
+      "prompt": "¿Cuánto pesa la batería de un auto eléctrico?",
+      "options": [
+        "Entre 1 y 10 kg",
+        "Entre 50 y 100 kg",
+        "Entre 200 y 500 kg",
+        "Entre 1000 y 2000 kg"
+      ],
+      "correctIndex": 2,
+      "explanation": "En promedio las baterías de los autos eléctricos pesan entre 300 y 500 kg, según la autonomía del vehículo."
+    },
+    {
+      "id": "DIMM_Q5",
+      "prompt": "¿Cuál es el objetivo del reciclaje directo de baterías de ion-litio?",
+      "options": [
+        "Fabricar almacenadores de energía",
+        "Recuperar materiales activos",
+        "Recuperar el litio",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 1,
+      "explanation": "El reciclaje directo tiene como objetivo recuperar los materiales para fabricar nuevas baterías y reducir residuos."
+    },
+    {
+      "id": "DIMM_Q6",
+      "prompt": "¿Cuál es la función de la carbonatación mineral para la mitigación del cambio climático?",
+      "options": [
+        "Generar oxígeno a partir de rocas",
+        "Capturar y almacenar dióxido de carbono",
+        "Reducir las emisiones de procesos industriales",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 1,
+      "explanation": "La carbonatación mineral secuestra moléculas de dióxido de carbono en una matriz mineral permitiendo además el almacenamiento para evitar la liberación."
+    },
+    {
+      "id": "DIMM_Q7",
+      "prompt": "¿Cuántas toneladas de residuos de construcción se generan en el Uruguay anualmente?",
+      "options": [
+        "Entre 10.000 y 30.000 ton",
+        "Entre 200.000 y 500.000 ton",
+        "Entre 700.000 y 1.000.000 tons",
+        "Más de 1.000.000 de ton"
+      ],
+      "correctIndex": 1,
+      "explanation": "En 2019 se estimó que se generan aproximadamente 450.000 toneladas por año de residuos de construcción y demolición."
+    },
+    {
+      "id": "DIMM_Q8",
+      "prompt": "¿Qué materiales se utilizan en la fabricación de cerámicas?",
+      "options": [
+        "Cuarzo, feldespato y arcillas",
+        "Piedra caliza y dolomita",
+        "Óxido de zinc, estaño y hierro",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Estos minerales se usan en la composición de cerámicas básicas, cerámicas porosas de revestimiento y esmaltes."
+    },
+    {
+      "id": "DIMM_Q9",
+      "prompt": "¿En qué se puede utilizar la cera de abeja producida por el sector apícola?",
+      "options": [
+        "Fabricación de velas",
+        "Fabricación de cosméticos",
+        "Recubrimiento de alimentos",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Puede utilizarse para el recubrimiento de alimentos y textiles, en cremas y pomadas, en la formulación de cosméticos y para la fabricación de artesanías."
+    },
+    {
+      "id": "CORROSION_Q1",
+      "prompt": "¿Qué es una chapa de acero galvanizado?",
+      "options": [
+        "Una chapa de zinc.",
+        "Un material imposible de oxidar.",
+        "Una chapa de acero inoxidable en el ambiente.",
+        "Una chapa de acero recubierta de zinc."
+      ],
+      "correctIndex": 3,
+      "explanation": "El zinc forma una capa protectora que evita la oxidación del acero."
+    },
+    {
+      "id": "CORROSION_Q2",
+      "prompt": "¿Qué es el acero inoxidable?",
+      "options": [
+        "Un material imposible de oxidar.",
+        "Es una aleación de metales nobles.",
+        "Un material que puede exponerse a cualquier ambiente durante más de cien años.",
+        "Una aleación de hierro, níquel y cromo y otros."
+      ],
+      "correctIndex": 3,
+      "explanation": "Este tipo de aleaciones genera una fina capa de óxido de cromo que se regenera y evita la corrosión."
+    },
+    {
+      "id": "CORROSION_Q3",
+      "prompt": "¿Para qué pintar una estructura de acero?",
+      "options": [
+        "Por razones de seguridad.",
+        "Es una manera de disminuir el deterioro.",
+        "Puede impedir el crecimiento de organismos sobre la superficie.",
+        "Todas las anteriores."
+      ],
+      "correctIndex": 3,
+      "explanation": "La pintura en estructuras industriales protege del óxido, mejora la seguridad y evita el crecimiento de microorganismos."
+    },
+    {
+      "id": "CORROSION_Q4",
+      "prompt": "Imagine una barra de acero inoxidable enterrada en la arena húmeda de la playa.",
+      "options": [
+        "La barra no se corroerá, es de acero inoxidable.",
+        "La barra sólo se corroerá en la zona enterrada.",
+        "La barra sólo se corroerá en la zona no enterrada.",
+        "Toda la barra se corroerá"
+      ],
+      "correctIndex": 3,
+      "explanation": "El acero inoxidable sí se corroe, pero muy lentamente; tanto enterrado como expuesto, la humedad y el oxígeno terminan afectando."
+    },
+    {
+      "id": "CORROSION_Q5",
+      "prompt": "¿Cuál de estos medios es más corrosivo?",
+      "options": [
+        "Agua de Bahía de Montevideo.",
+        "Agua de mar.",
+        "Agua del mate.",
+        "Depende del metal."
+      ],
+      "correctIndex": 3,
+      "explanation": "Algunos metales resisten el agua de mar y otros se dañan más con el calor o la acidez del mate."
+    },
+    {
+      "id": "TAPA_Q1",
+      "prompt": "¿Qué significa envasar en atmósfera modificada activa?",
+      "options": [
+        "Envasar al vacío total",
+        "Cambiar la composición de la atmósfera dentro del envase",
+        "Agregar conservantes",
+        "Utilizar envases completamente herméticos"
+      ],
+      "correctIndex": 1,
+      "explanation": "Se reemplaza el aire por una mezcla de gases específica que ayuda a prolongar la vida útil del alimento."
+    },
+    {
+      "id": "TAPA_Q2",
+      "prompt": "¿Qué significa envasar en atmósfera modificada pasiva?",
+      "options": [
+        "La atmósfera dentro del envase se modifica por la interacción envase-alimento.",
+        "Envasar los alimentos bajo atmósfera de gas totalmente inerte",
+        "Envasar alimentos al vacío",
+        "Utilizar envases totalmente herméticos"
+      ],
+      "correctIndex": 0,
+      "explanation": "Se utilizan envases que permiten pasar algunos gases, y la atmósfera obtenida permite prolongar la vida útil de los alimentos."
+    },
+    {
+      "id": "TAPA_Q3",
+      "prompt": "¿En qué consiste la liofilización?",
+      "options": [
+        "Calentar rápidamente los alimentos para secarlos",
+        "Congelar el alimento y remover el agua pasándola de sólido a gas (sublimación)",
+        "Incorporar conservantes dentro del alimento para preservarlo",
+        "Ninguna de las anteriores"
+      ],
+      "correctIndex": 1,
+      "explanation": "La liofilización es una técnica que permite secar alimentos utilizando temperaturas bajas. Esto permite preservar sabores, aromas y componentes bioactivos que son termosensibles."
+    },
+    {
+      "id": "TAPA_Q4",
+      "prompt": "¿Qué usos tiene el ultrasonido en alimentos?",
+      "options": [
+        "Monitorear y controlar procesos",
+        "Extraer compuestos beneficiosos de los alimentos",
+        "Modificar textura y composición de alimentos",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "El ultrasonido puede medir, modificar o extraer compuestos según la potencia usada."
+    },
+    {
+      "id": "GIIE_Q1",
+      "prompt": "Para producir hidrógeno verde podemos utilizar...",
+      "options": [
+        "Petróleo y gas natural",
+        "Energía renovable y agua",
+        "Carbón y calor",
+        "Oxígeno de alta pureza"
+      ],
+      "correctIndex": 1,
+      "explanation": "El hidrógeno verde se obtiene mediante electrólisis del agua usando electricidad de fuentes renovables, sin emitir gases contaminantes."
+    },
+    {
+      "id": "GIIE_Q2",
+      "prompt": "¿Por qué se llama \"hidrógeno verde\"?",
+      "options": [
+        "Porque es de color verde",
+        "Porque se produce en zonas rurales",
+        "Porque no contamina durante su producción",
+        "Porque se obtiene de plantas"
+      ],
+      "correctIndex": 2,
+      "explanation": "A diferencia del “gris” o el “azul”, el hidrógeno verde no emite CO₂ al producirse."
+    },
+    {
+      "id": "GIIE_Q3",
+      "prompt": "¿De dónde se obtiene el agua para producir hidrógeno verde?",
+      "options": [
+        "Exclusivamente de lluvia recolectada en zonas urbanas",
+        "Del subsuelo, ríos, lagos y mares después de un proceso de tratamiento",
+        "De plantas con un contenido de agua mayor al 80%",
+        "De la humedad del aire"
+      ],
+      "correctIndex": 1,
+      "explanation": "El agua debe purificarse para no dañar los electrolizadores."
+    },
+    {
+      "id": "GIIE_Q4",
+      "prompt": "¿Qué fuente de energía se necesita para producir hidrógeno verde?",
+      "options": [
+        "Carbón mineral",
+        "Energía nuclear",
+        "Energías renovables",
+        "Gas natural y petróleo"
+      ],
+      "correctIndex": 2,
+      "explanation": "El uso de energías renovables como la energía solar, eólica, hidráulica y en algunos casos biomasa permite que el proceso sea mayormente limpio."
+    },
+    {
+      "id": "GIIE_Q5",
+      "prompt": "¿Qué tecnología permite separar el agua para producir hidrógeno?",
+      "options": [
+        "Combustión",
+        "Desalinización",
+        "Electrólisis",
+        "Evaporación"
+      ],
+      "correctIndex": 2,
+      "explanation": "La electrólisis separa las moléculas de agua (H₂O) en oxígeno (O₂) e hidrógeno (H₂)."
+    },
+    {
+      "id": "GIIE_Q6",
+      "prompt": "¿Para qué se utiliza el hidrógeno verde?",
+      "options": [
+        "Como aditivo para combustibles.",
+        "Para producir plásticos amigables con el medio ambiente.",
+        "Como combustible limpio en industrias, transporte o generación eléctrica.",
+        "Como fertilizante para el jardín."
+      ],
+      "correctIndex": 2,
+      "explanation": "Es ideal para sectores que son difíciles de electrificar, como el transporte pesado."
+    },
+    {
+      "id": "GIIE_Q7",
+      "prompt": "¿Cuál es una ventaja de usar hidrógeno verde dentro de la matriz energética?",
+      "options": [
+        "Aumenta la dependencia del petróleo",
+        "Genera residuos radiactivos de alto valor",
+        "Permite almacenar energía renovable",
+        "Su transporte no impone dificultades"
+      ],
+      "correctIndex": 2,
+      "explanation": "Actúa como un “banco de energía” que ayuda a estabilizar la red eléctrica y puede reducir costos."
+    },
+    {
+      "id": "GIIE_Q8",
+      "prompt": "¿Qué gas se libera junto al hidrógeno en el proceso de electrólisis del agua?",
+      "options": [
+        "Helio",
+        "Dióxido de carbono",
+        "Oxígeno",
+        "Metano"
+      ],
+      "correctIndex": 2,
+      "explanation": "El oxígeno generado puede aprovecharse en procesos industriales o médicos."
+    },
+    {
+      "id": "GIIE_Q9",
+      "prompt": "¿Qué ventaja tienen las celdas de combustible que usan hidrógeno verde para producir energía eléctrica?",
+      "options": [
+        "Pueden dar uso a hidrógeno altamente contaminado",
+        "Generan electricidad sin generar contaminación en el proceso",
+        "Entregan mayor potencia que cualquier otro dispositivo",
+        "Consumen combustibles fósiles de forma limpia"
+      ],
+      "correctIndex": 1,
+      "explanation": "Solo emiten vapor de agua al funcionar."
+    },
+    {
+      "id": "GIIE_Q10",
+      "prompt": "¿Por qué es necesario comprimir el hidrógeno después de producirlo?",
+      "options": [
+        "Para que sea más explosivo",
+        "Para transformarlo en hidrógeno sólido",
+        "Para poder almacenarlo y transportarlo más fácilmente",
+        "Para hacerlo más pesado"
+      ],
+      "correctIndex": 2,
+      "explanation": "El hidrógeno es muy liviano y ocupa mucho espacio si no se comprime."
+    },
+    {
+      "id": "GIIE_Q11",
+      "prompt": "¿Cuál es un ejemplo de 'carrier' o portador de hidrógeno?",
+      "options": [
+        "Amoníaco",
+        "Biodiesel",
+        "Mercurio",
+        "Vapor de agua"
+      ],
+      "correctIndex": 0,
+      "explanation": "El amoníaco puede transportar hidrógeno a grandes distancias y luego liberarlo cuando se necesita."
+    },
+    {
+      "id": "GIIE_Q12",
+      "prompt": "¿Qué obstáculo presenta la introducción de hidrógeno en las redes de gas natural existentes?",
+      "options": [
+        "El hidrógeno daña algunos materiales de las tuberías",
+        "Es demasiado caro mezclarlo",
+        "Tiene mal olor",
+        "Cambia de color"
+      ],
+      "correctIndex": 0,
+      "explanation": "Se estudian materiales resistentes para permitir su uso en las redes actuales."
+    },
+    {
+      "id": "GIIE_Q13",
+      "prompt": "¿Qué sector se beneficiaría más del uso de hidrógeno verde?",
+      "options": [
+        "La industria pesada y el transporte de carga",
+        "La salud",
+        "La educación",
+        "El entretenimiento"
+      ],
+      "correctIndex": 0,
+      "explanation": "En camiones, trenes o barcos es difícil usar baterías, por eso el hidrógeno es una gran alternativa."
+    },
+    {
+      "id": "GIIE_Q14",
+      "prompt": "¿Cuál es uno de los desafíos del almacenamiento de hidrógeno?",
+      "options": [
+        "Se solidifica y no se lo puede bombear",
+        "Es muy corrosivo",
+        "Se escapa con facilidad por su pequeño tamaño molecular",
+        "Pierde su color con el tiempo"
+      ],
+      "correctIndex": 2,
+      "explanation": "Es el gas más pequeño y puede filtrarse por materiales que otros gases no atraviesan."
+    },
+    {
+      "id": "GIIE_Q15",
+      "prompt": "¿Qué potencial tiene el hidrógeno verde en el futuro energético mundial?",
+      "options": [
+        "Reemplazar completamente a los combustibles fósiles",
+        "Permitir una transición energética limpia y sostenible",
+        "Solucionar por su cuenta todos los problemas ambientales",
+        "Consumir toda el agua del planeta"
+      ],
+      "correctIndex": 1,
+      "explanation": "El hidrógeno verde es una de las principales apuestas para descarbonizar sectores difíciles de electrificar."
+    },
+    {
+      "id": "OPUNIT_Q1",
+      "prompt": "En la concentración de extractos con membranas, ¿cuál es la principal ventaja frente a la evaporación?",
+      "options": [
+        "Mayor temperatura del proceso",
+        "Menor consumo energético y preservación de compuestos sensibles",
+        "Eliminación de compuestos volátiles",
+        "Reducción del contenido de azúcares"
+      ],
+      "correctIndex": 1,
+      "explanation": "Las membranas permiten separar y concentrar solutos usar altas temperaturas, ahorrando energía y evitando que se dañen aromas o nutrientes"
+    },
+    {
+      "id": "OPUNIT_Q2",
+      "prompt": "¿Cuál de las siguientes membranas separa compuestos de bajo peso molecular (como sales o azúcares)?",
+      "options": [
+        "Microfiltración",
+        "Ultrafiltración",
+        "Nanofiltración",
+        "Filtración gruesa"
+      ],
+      "correctIndex": 2,
+      "explanation": "La nanofiltración retiene sales y moléculas pequeñas, dejando pasar el agua y otras moléculas más livianas."
+    },
+    {
+      "id": "OPUNIT_Q3",
+      "prompt": "¿Qué técnica se usa para secar leche en polvo o café instantáneo?",
+      "options": [
+        "Secado spray",
+        "Secado solar",
+        "Secado en tambor",
+        "Secado en bandeja"
+      ],
+      "correctIndex": 0,
+      "explanation": "El secado spray evapora agua rápidamente, transformando el líquido en polvo al contacto con aire caliente, conservando el sabor y la calidad del producto."
+    },
+    {
+      "id": "OPUNIT_Q4",
+      "prompt": "En la industria láctea, ¿qué tecnología se usa para leche en polvo?",
+      "options": [
+        "Secador de bandejas",
+        "Secador spray",
+        "Secado al sol",
+        "Secador de flujo a través"
+      ],
+      "correctIndex": 1,
+      "explanation": "El secador spray es el estándar mundial por su eficiencia y calidad del producto."
+    },
+    {
+      "id": "OPUNIT_Q5",
+      "prompt": "¿Qué tecnologías sirven para extraer compuestos bioactivos?",
+      "options": [
+        "Extracción con gua subcrítica",
+        "Extracción con etanol",
+        "Extracción con agua caliente",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Todas son técnicas que permiten obtener compuestos valiosos de plantas o alimentos, según el tipo de sustancia."
+    },
+    {
+      "id": "OPUNIT_Q6",
+      "prompt": "¿Qué ocurre cuando secamos un producto con aire caliente?",
+      "options": [
+        "Evaporación del agua",
+        "Sublimación del agua",
+        "Radiación ultravioleta",
+        "Ninguna de las anteriores"
+      ],
+      "correctIndex": 0,
+      "explanation": "Al secar un producto, el calor hace que el agua que contiene se evapore y salga con el aire."
+    },
+    {
+      "id": "OPUNIT_Q7",
+      "prompt": "¿Cuáles son solventes ‘verdes’ para extracción?",
+      "options": [
+        "Etanol, agua, CO₂ supercrítico",
+        "Agua, hexano, benceno",
+        "Tolueno, cloroformo, acetona",
+        "Acetona, metanol, agua"
+      ],
+      "correctIndex": 0,
+      "explanation": "Se llaman solventes ‘verdes’ porque son menos tóxicos y más respetuosos con el ambiente."
+    },
+    {
+      "id": "OPUNIT_Q8",
+      "prompt": "El alperujo es un subproducto de:",
+      "options": [
+        "Industria del vino",
+        "Industria del aceite de oliva",
+        "Industria láctea",
+        "Ninguna"
+      ],
+      "correctIndex": 1,
+      "explanation": "Es el residuo que queda tras prensar las aceitunas para obtener aceite. Está compesto por la pulpa y hueso de la aceituna."
+    },
+    {
+      "id": "OPUNIT_Q9",
+      "prompt": "¿Cuál es el principal problema que limita el paso de líquido a través de una membrana?",
+      "options": [
+        "Ensuciamiento (fouling)",
+        "Temperatura",
+        "Color de la membrana",
+        "pH neutro"
+      ],
+      "correctIndex": 0,
+      "explanation": "El ensuciamiento ocurre cuando partículas o compuestos se pegan a la membrana, tapando sus poros y reduciendo el flujo."
+    },
+	{
+      "id": "OPUNIT_Q10",
+      "prompt": "¿Qué son los compuestos fenólicos?",
+      "options": [
+        "Minerales esenciales",
+        "Vitaminas",
+        "Sustancias presentes en plantas con acción antioxidante",
+        "Proteínas vegetales"
+      ],
+      "correctIndex": 2,
+      "explanation": "Son sustancias que las plantas producen para protegerse del daño causado por el sol o el ambiente. En los alimentos, ayudan a evitar que se oxiden y aportan beneficios para la salud."
+    },
+    {
+      "id": "OPUNIT_Q11",
+      "prompt": "¿Qué factores influyen en la extracción de compuestos fenólicos (antioxidantes naturales)?",
+      "options": [
+        "Relación sólido/líquido",
+        "Temperatura",
+        "Tiempo de extracción",
+        "Todos los anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Todos esos factores afectan cuánto se extraen los compuestos. Por ejemplo, una temperatura adecuada y una buena proporción entre el material vegetal y el líquido mejoran el rendimiento."
+    },
+    {
+      "id": "OPUNIT_Q12",
+      "prompt": "¿Qué materias primas contienen compuestos fenólicos (sustancias naturales con poder antioxidante)?",
+      "options": [
+        "Cáscara de arroz",
+        "Alperujo (residuo de aceitunas)",
+        "Orujo de uva",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Todos estos materiales vegetales contienen compuestos naturales que ayudan a proteger a las plantas del daño causado por la oxidación. Por eso también se investigan para conservar alimentos o elaborar productos saludables."
+    },
+    {
+      "id": "OPUNIT_Q13",
+      "prompt": "Los compuestos fenólicos (sustancias naturales con efecto antioxidante), pueden:",
+      "options": [
+        "Usarse en cosmética",
+        "Ayudar a conservar alimentos",
+        "Utilizarse en fármacos",
+        "Todas las anteriores"
+      ],
+      "correctIndex": 3,
+      "explanation": "Gracias a su acción antioxidante, estos compuestos se emplean para proteger alimentos del deterioro, mejorar cosméticos y desarrollar productos farmacéuticos."
+    },
+    {
+      "id": "OPUNIT_Q14",
+      "prompt": "¿Qué condición acelera el secado de un sólido con aire?",
+      "options": [
+        "Bajar temperatura",
+        "Aumentar humedad",
+        "Aumentar velocidad del aire",
+        "Bajar velocidad del aire"
+      ],
+      "correctIndex": 2,
+      "explanation": "Cuanto más rápido circula el aire, más fácilmente se elimina la humedad."
+    },
+    {
+      "id": "OPUNIT_Q15",
+      "prompt": "¿Qué sucede cuando un material alcanza su humedad de equilibrio?",
+      "options": [
+        "El sólido se funde",
+        "El secado se acelera",
+        "No se seca más con ese aire",
+        "Queda totalmente seco"
+      ],
+      "correctIndex": 2,
+      "explanation": "El sólido y el aire tienen la misma humedad, por lo que ya no se puede eliminar más agua."
+    },
+    {
+      "id": "OPUNIT_Q16",
+      "prompt": "¿Qué estrategia mejora la extracción de compuestos bioactivos en un material vegetal con agua caliente?",
+      "options": [
+        "Usar la planta entera",
+        "Triturar antes de extraer",
+        "Enfriar el agua",
+        "Secar la planta primero"
+      ],
+      "correctIndex": 1,
+      "explanation": "Al triturar, se aumenta el área de contacto y los compuestos se disuelven mejor."
+    },
+    {
+      "id": "OPUNIT_Q17",
+      "prompt": "¿Cuál es un ejemplo de extracción sólido-líquido?",
+      "options": [
+        "Hacer té en agua caliente",
+        "Mezclar aceite con agua",
+        "Secar ropa al sol",
+        "Fundir hielo"
+      ],
+      "correctIndex": 0,
+      "explanation": "Los compuestos del té se disuelven en el agua caliente, es un ejemplo clásico de extracción."
+    },
+    {
+      "id": "BIOING_Q1",
+      "prompt": "¿Por qué se busca producir etanol y butanol a partir de residuos agroindustriales?",
+      "options": [
+        "Porque es fácil.",
+        "Porque no compite con tierras para alimentos.",
+        "Porque es un reto.",
+        "Ninguna de las anteriores."
+      ],
+      "correctIndex": 1,
+      "explanation": "Los biocombustibles de residuos agroindustriales tienen potencial como fuente sostenible de energía ya que ayudan a disminuir las emisiones de gases de efecto invernadero."
+    },
+    {
+      "id": "BIOING_Q2",
+      "prompt": "¿Qué es una Biorrefinería?",
+      "options": [
+        "Una refinería de petróleo ecológica.",
+        "Un proceso que transforma biomasa en productos útiles.",
+        "Un tipo de fermentación.",
+        "Una industria que captura gases de efecto invernadero."
+      ],
+      "correctIndex": 1,
+      "explanation": "Una biorrefinería permite obtener energía, biocombustibles y químicos útiles a partir de variedad de residuos agroindustriales."
+    },
+    {
+      "id": "BIOING_Q3",
+      "prompt": "¿Qué ventajas tiene una biorrefinería frente a un proceso para obtener un solo producto?",
+      "options": [
+        "Permite mejorar el aprovechamiento de un residuo.",
+        "Permite producir biocombustibles, biomateriales y productos químicos.",
+        "Permite mejorar la viabilidad económica de procesos.",
+        "Todas las anteriores."
+      ],
+      "correctIndex": 3,
+      "explanation": "En el IIQ se estudian varios modelos de biorrefinería, partiendo de residuos como cáscara de arroz y aserrín de eucalipto."
+    },
+    {
+      "id": "BIOING_Q4",
+      "prompt": "¿Por qué investigadores del IIQ viajan a la Base Antártica Artigas?",
+      "options": [
+        "Para estudiar pingüinos.",
+        "Para buscar microorganismos útiles para la industria.",
+        "Para pasear y hacer turismo.",
+        "Para estudiar el deshielo de los glaciares."
+      ],
+      "correctIndex": 1,
+      "explanation": "Los microorganismos antárticos están adaptados para vivir en un ambiente extremo, producen compuestos de defensa como pigmentos y antibióticos."
+    },
+    {
+      "id": "BIOING_Q5",
+      "prompt": "¿Qué son los carotenoides?",
+      "options": [
+        "Pigmentos naturales rojos, naranjas o amarillos.",
+        "Compuestos antioxidantes beneficiosos para la salud.",
+        "Sustancias producidas por algunas plantas, algas y bacterias.",
+        "Todas las anteriores."
+      ],
+      "correctIndex": 3,
+      "explanation": "Dan color a frutas y verduras como zanahoria o tomate y benefician la salud."
+    },
+    {
+      "id": "BIOING_Q6",
+      "prompt": "¿Por qué la Base Científica Antártica Artigas es un lugar interesante para buscar microorganismos?",
+      "options": [
+        "Producen pigmentos protectores.",
+        "Requieren poca energía para cultivarse.",
+        "Pueden servir para crear nuevos antibióticos.",
+        "Todas las anteriores."
+      ],
+      "correctIndex": 3,
+      "explanation": "Sus adaptaciones al frío los hacen valiosos para biotecnología y producción de compuestos útiles."
+    },
+    {
+      "id": "BIOING_Q7",
+      "prompt": "¿Por qué se realizan análisis tecno-económicos de procesos en conjunto con su investigación en el laboratorio?",
+      "options": [
+        "Para ganar dinero.",
+        "Para patentar ideas.",
+        "Para evaluar la viabilidad del proceso y guiar la investigación.",
+        "Para mostrarle a inversionistas y que compren nuestras consultorías."
+      ],
+      "correctIndex": 2,
+      "explanation": "Combinan modelado, diseño y evaluación económica para estudiar la viabilidad de los procesos industriales antes de su implementación."
+    },
+    {
+      "id": "BIOING_Q8",
+      "prompt": "¿Para qué se utiliza el análisis de ciclo de vida en la ingeniería de procesos?",
+      "options": [
+        "Estudiar las plantas.",
+        "Evaluar impactos ambientales de un proceso.",
+        "Conocer los ecosistemas y su evolución en el tiempo.",
+        "Analizar el efecto de químicos en la vida de un trabajador."
+      ],
+      "correctIndex": 1,
+      "explanation": "Evalúa los impactos ambientales desde la producción de los materiales hasta el final de la vida del producto."
+    },
+    {
+      "id": "BIOING_Q9",
+      "prompt": "¿A qué llamamos bioproducto?",
+      "options": [
+        "Un producto ecológico.",
+        "Un producto hecho a partir de materia orgánica.",
+        "Un producto que no emite gases de efecto invernadero.",
+        "Todas las anteriores."
+      ],
+      "correctIndex": 1,
+      "explanation": "Estos productos a menudo se obtienen a través de procesos biotecnológicos. Se caracterizan por ser renovables, biodegradables y con un menor impacto ambiental."
+    }
+  ],
+  "tf": [
+    {
+      "id": "BIOPROA_T1",
+      "prompt": "Las industrias deben contar con un plan de tratamiento de residuos/ efluentes aprobado por la Dirección Nacional de Calidad y Evaluación Ambiental.",
+      "answerTrue": true,
+      "explanation": "La normativa ambiental exige gestionar y tratar los efluentes y residuos sólidos con autorización, para evitar impactos en suelos, aire y cursos de agua."
+    },
+    {
+      "id": "BIOPROA_T2",
+      "prompt": "El biogás contiene principalmente Nitrógeno.",
+      "answerTrue": false,
+      "explanation": "El biogás está formado por metano (CH₄) y dióxido de carbono (CO₂), con trazas de otros gases."
+    },
+    {
+      "id": "BIOPROA_T3",
+      "prompt": "El digestato (material sólido de Digestión Anaerobia) puede usarse como fertilizante.",
+      "answerTrue": true,
+      "explanation": "Aporta nutrientes (N, P, K) y materia orgánica estabilizada que mejora las características del suelo."
+    },
+    {
+      "id": "BIOPROA_T4",
+      "prompt": "El exceso de fósforo en el agua puede generar grandes manchas verdes de algas.",
+      "answerTrue": true,
+      "explanation": "El exceso en nutrientes causa eutrofización: proliferan algas y baja el oxígeno disuelto."
+    },
+    {
+      "id": "BIOPROA_T5",
+      "prompt": "El compostaje ayuda a reducir la cantidad de basura que va al relleno sanitario.",
+      "answerTrue": true,
+      "explanation": "Convierte la fracción orgánica de los residuos en compost, disminuyendo el volumen dispuesto en relleno sanitario."
+    },
+    {
+      "id": "BIOPROA_T6",
+      "prompt": "El compost maduro y estable huele mal y atrae moscas.",
+      "answerTrue": false,
+      "explanation": "Un compost maduro y estable tiene olor a tierra, los malos olores indican proceso incompleto."
+    },
+    {
+      "id": "BIOING_T1",
+      "prompt": "Alimentos fermentados como el yogurt y el kéfir contienen microorganismos vivos.",
+      "answerTrue": true,
+      "explanation": "Tienen probióticos (microorganismos vivos beneficiosos) que actúan en el aparato digestivo, donde pueden mejorar el microbioma intestinal."
+    },
+    {
+      "id": "BIOING_T2",
+      "prompt": "Todos los microorganismos son malos y causan enfermedades.",
+      "answerTrue": false,
+      "explanation": "Muchos microorganismos son utilizados nuestra vida cotidiana. Como la levadura en el pan o las bacterias que fermentan la leche para producir yogur y quesos"
+    },
+    {
+      "id": "BIOING_T3",
+      "prompt": "La bioprospección es la exploración de la naturaleza en busca de organismos y sustancias con potencial uso para el ser humano.",
+      "answerTrue": true,
+      "explanation": "Consiste en buscar nuevos microorganismos y sustancias aplicaciones en sectores como el industrial, alimentario, cosmético y farmacéutico."
+    },
+    {
+      "id": "BIOING_T4",
+      "prompt": "Las enzimas microbianas son producidas por animales.",
+      "answerTrue": false,
+      "explanation": "Son producidas por microorganismos, como bacterias y hongos. Son herramientas biotecnológicas, con utilidad en el sector industrial y alimenticio."
+    },
+    {
+      "id": "DIMM_T1",
+      "prompt": "¿En Uruguay se exportan minerales?",
+      "answerTrue": true,
+      "explanation": "En uruguay se exportan piedras semipreciosas y productos producidos con piedra caliza"
+    },
+    {
+      "id": "DIMM_T2",
+      "prompt": "¿En Uruguay se reciclan baterías de ion-litio?",
+      "answerTrue": false,
+      "explanation": "Actualmente no hay reciclaje industrial local; suelen enviarse al exterior para su tratamiento."
+    },
+    {
+      "id": "CORROSION_T1",
+      "prompt": "El acero inoxidable se puede oxidar.",
+      "answerTrue": true,
+      "explanation": "Aunque forma una capa pasiva de óxido de cromo, en ambientes agresivos puede sufrir corrosión (p. ej., picado por cloruros)."
+    },
+    {
+      "id": "CORROSION_T2",
+      "prompt": "El Titanic está hundido a 4000 m de profundidad, donde la concentración de oxígeno es casi despreciable, por tanto no se puede corroer.",
+      "answerTrue": false,
+      "explanation": "La corrosión continúa por la acción de cloruros y microorganismos; no depende sólo del oxígeno disuelto."
+    },
+    {
+      "id": "CORROSION_T3",
+      "prompt": "Los materiales metálicos cuando están totalmente secos no pueden corroerse.",
+      "answerTrue": true,
+      "explanation": "La corrosión electroquímica requiere humedad/electrolito; sin medio acuoso el proceso se minimiza."
+    },
+    {
+      "id": "CORROSION_T4",
+      "prompt": "La producción de agua potable consiste en el agregado de cloro.",
+      "answerTrue": false,
+      "explanation": "El tratamiento incluye etapas como coagulación, filtración y desinfección; el cloro es sólo una de ellas."
+    },
+    {
+      "id": "TAPA_T1",
+      "prompt": "El aire dentro de un paquete de ensalada envasada es igual al aire que respiramos.",
+      "answerTrue": false,
+      "explanation": "La atmósfera dentro del envase se modifica por la interacción con el alimento."
+    },
+    {
+      "id": "TAPA_T2",
+      "prompt": "El ultrasonido no se puede usar en alimentos porque los daña y hace inseguros.",
+      "answerTrue": false,
+      "explanation": "A baja potencia es no destructivo para control/monitoreo; a alta potencia se usa con parámetros seguros para texturizar o extraer."
+    },
+    {
+      "id": "TAPA_T3",
+      "prompt": "La liofilización ayuda a conservar el sabor, textura original y compuestos beneficiosos.",
+      "answerTrue": true,
+      "explanation": "Al secar por sublimación a baja temperatura se preservan compuestos sensibles al calor."
+    },
+    {
+      "id": "TAPA_T4",
+      "prompt": "El envasado en atmósferas modificada busca preservar por más tiempo el sabor, color, textura e inocuidad del alimento.",
+      "answerTrue": true,
+      "explanation": "Ajusta la mezcla de gases y la barrera del envase para ralentizar oxidación y crecimiento microbiano."
+    },
+    {
+      "id": "GIIE_T1",
+      "prompt": "El hidrógeno producido en base a energía solar y agua es hidrógeno verde.",
+      "answerTrue": true,
+      "explanation": "Esta es justamente la base del hidrógeno verde: una producción sin emisiones, usando energías renovables."
+    },
+    {
+      "id": "GIIE_T2",
+      "prompt": "El consumo de hidrógeno en vehículos con celdas de combustible produce emisiones de gases de efecto invernadero.",
+      "answerTrue": false,
+      "explanation": "Al ser usado en celdas de combustible, el único subproducto es vapor de agua."
+    },
+    {
+      "id": "GIIE_T3",
+      "prompt": "Es posible almacenar energía eléctrica en forma de hidrógeno para usarla después.",
+      "answerTrue": true,
+      "explanation": "Esta es una de sus aplicaciones más prometedoras para estabilizar redes eléctricas con alta variabilidad."
+    },
+    {
+      "id": "GIIE_T4",
+      "prompt": "El hidrógeno verde puede reemplazar al gas natural en algunas aplicaciones industriales.",
+      "answerTrue": true,
+      "explanation": "Se están realizando pruebas para sustituir gradualmente el gas natural por hidrógeno en hornos industriales, calderas y redes de distribución."
+    },
+    {
+      "id": "GIIE_T5",
+      "prompt": "El proceso de electrólisis de agua emite dióxido de carbono (CO₂).",
+      "answerTrue": false,
+      "explanation": "Siempre que la energía usada sea renovable, el proceso es libre de emisiones directas de CO₂."
+    },
+    {
+      "id": "GEN_T1",
+      "prompt": "Cuando llueve, la ropa se seca más rápido.",
+      "answerTrue": false,
+      "explanation": "Con humedad alta, el aire no puede absorber más agua y la ropa demora en secarse."
+    },
+    {
+      "id": "GEN_T2",
+      "prompt": "Una biorrefinería solo produce energía.",
+      "answerTrue": false,
+      "explanation": "También produce alimentos, papel, plásticos biodegradables y fertilizantes."
+    },
+    {
+      "id": "GEN_T3",
+      "prompt": "El azúcar de remolacha o caña se puede extraer en una biorrefinería.",
+      "answerTrue": true,
+      "explanation": "Parte de la planta se transforma en azúcar y el resto en otros productos."
+    },
+    {
+      "id": "GEN_T4",
+      "prompt": "Los residuos de madera no sirven para nada en una biorrefinería.",
+      "answerTrue": false,
+      "explanation": "Se pueden transformar en pellets, papel o biocombustibles."
+    },
+    {
+      "id": "GEN_T5",
+      "prompt": "La pasteurización sirve para matar bacterias malas en la leche.",
+      "answerTrue": true,
+      "explanation": "Calentar la leche a cierta temperatura mata microorganismos dañinos."
+    },
+    {
+      "id": "GEN_T6",
+      "prompt": "Todos los alimentos se conservan igual sin refrigeración.",
+      "answerTrue": false,
+      "explanation": "Algunos alimentos necesitan frío o procesos especiales para no descomponerse."
+    },
+    {
+      "id": "GEN_T7",
+      "prompt": "La congelación evita que los alimentos pierdan sus nutrientes para siempre.",
+      "answerTrue": false,
+      "explanation": "Congelar retrasa el deterioro, pero algunos nutrientes pueden degradarse lentamente."
+    },
+    {
+      "id": "GEN_T8",
+      "prompt": "La deshidratación de frutas permite que duren más tiempo.",
+      "answerTrue": true,
+      "explanation": "Al quitar el agua, se reduce la posibilidad de que crezcan bacterias y moho."
+    },
+    {
+      "id": "GEN_T9",
+      "prompt": "La biomasa solo se puede usar para hacer comida.",
+      "answerTrue": false,
+      "explanation": "La biomasa (residuos de plantas o animales) se puede quemar o fermentar para producir energía."
+    },
+    {
+      "id": "OPUNIT_T1",
+      "prompt": "En el secado spray, el producto se alimenta como líquido y se seca casi instantáneamente en contacto con aire caliente.",
+      "answerTrue": true,
+      "explanation": "En este proceso, gotas de líquido se transforman en polvo en pocos segundos gracias al aire caliente."
+    },
+    {
+      "id": "OPUNIT_T2",
+      "prompt": "La extracción de compuestos bioactivos siempre requiere solventes peligrosos.",
+      "answerTrue": false,
+      "explanation": "También se pueden usar solventes verdes como agua o etanol, los cuales no son considerados peligrosos ni contaminantes."
+    },
+    {
+      "id": "OPUNIT_T3",
+      "prompt": "El secado de la celulosa se realiza con aire caliente que evapora el agua de la pulpa.",
+      "answerTrue": true,
+      "explanation": "El aire caliente elimina el agua y deja la fibra seca lista para usar."
+    },
+    {
+      "id": "OPUNIT_T4",
+      "prompt": "Las membranas (filtros) de microfiltración pueden retener virus.",
+      "answerTrue": false,
+      "explanation": "Sus poros son grandes y solo retienen bacterias; para virus se requieren membranas con poros más pequeños."
+    },
+    {
+      "id": "OPUNIT_T5",
+      "prompt": "El secado al sol es el método más rápido y controlado para secar productos.",
+      "answerTrue": false,
+      "explanation": "Secar al sol es lento y poco controlado ya que depende del clima; generalmente se prefieren secadores mecánicos."
+    },
+    {
+      "id": "OPUNIT_T6",
+      "prompt": "La ósmosis inversa permite obtener agua potable a partir de agua de mar.",
+      "answerTrue": true,
+      "explanation": "Es un proceso de filtrado que elimina la sal y las impurezas del agua de mar, haciéndola apta para beber."
+    },
+    {
+      "id": "OPUNIT_T7",
+      "prompt": "El ensuciamiento (fouling) de membranas (filtros) mejora la operación.",
+      "answerTrue": false,
+      "explanation": "El fouling tapa los poros y reduce el flujo, dificultando la operación."
+    },
+    {
+      "id": "OPUNIT_T8",
+      "prompt": "Durante el secado, se puede aumentar la temperatura del aire sin ningún límite.",
+      "answerTrue": false,
+      "explanation": "El exceso de calor puede dañar el producto y afectar su calidad."
+    },
+    {
+      "id": "OPUNIT_T9",
+      "prompt": "El orujo de uva es un subproducto de la industria del café.",
+      "answerTrue": false,
+      "explanation": "Es el residuo sólido del vino, formado por pieles, semillas y pulpa de uva."
+    },
+    {
+      "id": "OPUNIT_T10",
+      "prompt": "Algunos compuestos naturales con efecto antioxidante, como los compuestos fenólicos, pueden usarse en alimentos, medicamentos o cosméticos.",
+      "answerTrue": true,
+      "explanation": "Sus propiedades antioxidantes permiten aplicaciones en diferentes industrias."
+    },
+    {
+      "id": "OPUNIT_T11",
+      "prompt": "Ningún subproducto industrial puede aprovecharse para obtener otros productos de valor.",
+      "answerTrue": false,
+      "explanation": "Muchos residuos agroindustriales, como cáscaras y orujos, contienen compuestos valiosos que se pueden aprovechar."
+    },
+    {
+      "id": "OPUNIT_T12",
+      "prompt": "Es posible obtener compuestos valiosos a partir de la corteza de pino.",
+      "answerTrue": true,
+      "explanation": "La corteza contiene antioxidantes naturales con aplicaciones en alimentos y cosmética, como los taninos."
+    },
+    {
+      "id": "OPUNIT_T13",
+      "prompt": "El alperujo es un residuo de la industria del aceite de oliva.",
+      "answerTrue": true,
+      "explanation": "Es la mezcla de piel, pulpa y hueso de la aceituna tras la extracción de aceite."
+    },
+    {
+      "id": "OPUNIT_T14",
+      "prompt": "El alperujo no contiene compuestos bioactivos.",
+      "answerTrue": false,
+      "explanation": "Es una fuente importante de compuestos naturales beneficiosos con propiedades antioxidantes."
+    },
+    {
+      "id": "OPUNIT_T15",
+      "prompt": "Los residuos del aceite de oliva poseen más compuestos bioactivos que el propio aceite de oliva.",
+      "answerTrue": true,
+      "explanation": "La mayor parte de los compuestos presentes en la oliva quedan en el alperujo y no pasan al aceite."
+    },
+    {
+      "id": "OPUNIT_T16",
+      "prompt": "El vino tinto tiene más compuestos antioxidantes que el vino blanco.",
+      "answerTrue": true,
+      "explanation": "El vino tinto tiene antocianinas, pigmentos naturales de la piel de la uva que actúan como antioxidantes."
+    },
+    {
+      "id": "OPUNIT_T17",
+      "prompt": "Del orujo de manzana se puede obtener una sustancia que espesa mermelada.",
+      "answerTrue": true,
+      "explanation": "Es una fuente natural de una fibra que se usa como gelificante en jaleas y mermeladas."
+    },
+    {
+      "id": "OPUNIT_T18",
+      "prompt": "Las tecnologías de membranas pueden concentrar y purificar compuestos.",
+      "answerTrue": true,
+      "explanation": "Funcionan como filtros muy finos que separan impurezas sin usar calor, conservando las sustancias útiles."
+    },
+    {
+      "id": "OPUNIT_T19",
+      "prompt": "Se pueden obtener compuestos valiosos de residuos usando solo agua caliente.",
+      "answerTrue": true,
+      "explanation": "El agua caliente libera compuestos sin usar químicos peligrosos."
+    },
+    {
+      "id": "OPUNIT_T20",
+      "prompt": "El agua subcrítica es agua normal a temperatura ambiente.",
+      "answerTrue": false,
+      "explanation": "Es agua a alta temperatura y presión que se mantiene líquida sin hervir."
+    },
+    {
+      "id": "OPUNIT_T21",
+      "prompt": "Los tratamientos hidrotérmicos siempre destruyen los compuestos bioactivos.",
+      "answerTrue": false,
+      "explanation": "Si se controlan bien, permiten extraer los compuestos sin dañarlos."
+    }
+  ],
+  "fortune": [
+    "Ganas 2 puntos"
+  ],
+  "bad": [
+    "pierdes 1 punto"
+  ]
+}
