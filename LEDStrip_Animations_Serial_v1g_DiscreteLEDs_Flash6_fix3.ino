@@ -65,6 +65,7 @@ const uint32_t COL_GREEN  = COLOR4(0, 255,   0, 0);
 const uint32_t COL_RED    = COLOR4(255, 0,   0, 0);
 const uint32_t COL_YELLOW = COLOR4(255,180,  0, 0);
 const uint32_t COL_VIOLET = COLOR4(180,  0, 255, 0);
+const uint32_t COL_WHITE  = COLOR4(255,255,255,0);
 
 // -------- Idle configuration --------
 #define IDLE_MAX_GROUPS 64
@@ -75,6 +76,19 @@ bool     idleEnabled   = true;
 uint8_t  idleCount     = 0;
 uint16_t idleLen[IDLE_MAX_GROUPS];
 char     idleCol[IDLE_MAX_GROUPS];
+
+// -------- Browser-authoritative board snapshot --------
+#define BOARD_MAX_PLAYERS 6
+bool boardStateActive = false;
+uint16_t boardTurn = 0;
+uint8_t boardActivePlayer = 0;
+uint8_t boardPlayerCount = 0;
+uint8_t boardPlayerPos[BOARD_MAX_PLAYERS];
+char boardPlayerBranch[BOARD_MAX_PLAYERS];
+uint32_t boardPlayerColor[BOARD_MAX_PLAYERS];
+String boardPhase;
+uint8_t boardHintCount = 0;
+uint8_t boardHintPos[2];
 
 // -------- Animation system --------
 enum AnimType : uint8_t { ANIM_NONE, ANIM_PULSE, ANIM_TWINKLE, ANIM_FLASH3, ANIM_TRAILS };
@@ -175,6 +189,24 @@ void renderIdle(){
   for(; p<NUM_LEDS; p++) strip.setPixelColor(p, 0);
 }
 
+void renderBoardState(){
+  strip.clear();
+  uint16_t first = 0;
+  bool whitePhase = ((millis() / 350UL) % 2UL) == 0;
+  for(uint8_t g=0; g<idleCount && g<20; g++){
+    uint16_t len = idleLen[g];
+    bool hinted = false;
+    for(uint8_t h=0; h<boardHintCount; h++) if(boardHintPos[h] == g+1) hinted = true;
+    uint32_t color = (hinted && whitePhase) ? COL_WHITE : colorFromChar(idleCol[g]);
+    for(uint16_t k=0; k<len && first+k<NUM_LEDS; k++){
+      strip.setPixelColor(first+k, color);
+    }
+    first += len;
+    if(first >= NUM_LEDS) break;
+  }
+  strip.show();
+}
+
 // Start an animation (uint8_t to avoid prototype ordering issues)
 void startAnim(uint8_t t, uint32_t color, uint16_t duration){
   anim.type = (AnimType)t;
@@ -272,7 +304,9 @@ void renderAnim(){
   lastFrame = now;
 
   if (anim.type == ANIM_NONE){
-    if (idleEnabled){
+    if (boardStateActive){
+      renderBoardState();
+    }else if (idleEnabled){
       renderIdle();
       strip.show();
     }else{
@@ -368,9 +402,79 @@ bool parseIdleColorsCSV(const String& csv){
   return true;
 }
 
+uint32_t parseHexColor(String hex){
+  hex.trim();
+  if(hex.startsWith("#")) hex = hex.substring(1);
+  if(hex.length() != 6) return COL_VIOLET;
+  unsigned long rgb = strtoul(hex.c_str(), NULL, 16);
+  return COLOR4((rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF, 0);
+}
+
+void parseBoardPlayers(const String& csv){
+  boardPlayerCount = 0;
+  int start = 0;
+  while(start < (int)csv.length() && boardPlayerCount < BOARD_MAX_PLAYERS){
+    int comma = csv.indexOf(',', start);
+    String token = (comma >= 0) ? csv.substring(start, comma) : csv.substring(start);
+    int a = token.indexOf('@');
+    int b = (a >= 0) ? token.indexOf('@', a+1) : -1;
+    int c = (b >= 0) ? token.indexOf('@', b+1) : -1;
+    if(a >= 0 && b >= 0 && c >= 0){
+      uint8_t idx = boardPlayerCount++;
+      boardPlayerPos[idx] = (uint8_t)constrain(token.substring(a+1, b).toInt(), 1, 20);
+      String branch = token.substring(b+1, c); branch.toUpperCase();
+      boardPlayerBranch[idx] = branch.length() ? branch.charAt(0) : 'N';
+      boardPlayerColor[idx] = parseHexColor(token.substring(c+1));
+    }
+    if(comma < 0) break;
+    start = comma+1;
+  }
+}
+
+void parseBoardHints(const String& csv){
+  boardHintCount = 0;
+  int start = 0;
+  while(start < (int)csv.length() && boardHintCount < 2){
+    int comma = csv.indexOf(',', start);
+    String token = (comma >= 0) ? csv.substring(start, comma) : csv.substring(start);
+    token.trim();
+    int pos = token.toInt();
+    if(pos >= 1 && pos <= 20) boardHintPos[boardHintCount++] = (uint8_t)pos;
+    if(comma < 0) break;
+    start = comma+1;
+  }
+}
+
+bool parseBoardState(const String& payload){
+  boardHintCount = 0;
+  int start = 0;
+  while(start < (int)payload.length()){
+    int semi = payload.indexOf(';', start);
+    String field = (semi >= 0) ? payload.substring(start, semi) : payload.substring(start);
+    field.trim();
+    String upper = field; upper.toUpperCase();
+    if(upper.startsWith("T=")) boardTurn = (uint16_t)field.substring(2).toInt();
+    else if(upper.startsWith("A=")) boardActivePlayer = (uint8_t)field.substring(2).toInt();
+    else if(upper.startsWith("S=")) boardPhase = field.substring(2);
+    else if(upper.startsWith("H=")) parseBoardHints(field.substring(2));
+    else if(upper.startsWith("P=")) parseBoardPlayers(field.substring(2));
+    if(semi < 0) break;
+    start = semi+1;
+  }
+  if(boardPlayerCount == 0) return false;
+  if(boardActivePlayer >= boardPlayerCount) boardActivePlayer = 0;
+  boardStateActive = true;
+  return true;
+}
+
 void handleCmd(String s){
   s.trim(); if (!s.length()) return;
   String u = s; u.toUpperCase();
+
+  // Full browser-owned game snapshot:
+  // BOARD:T=3;A=1;S=move-preview;H=9;P=1@4@S@2563EB,2@10@L@BE123C
+  if(u == "BOARD:CLEAR") { boardStateActive=false; return; }
+  if(u.startsWith("BOARD:")) { parseBoardState(s.substring(6)); return; }
 
   // Idle controls
   if (u == "IDLE:ON")  { idleEnabled=true;  return; }
@@ -395,7 +499,8 @@ void handleCmd(String s){
   if (u == "KEY:OFF") { keyboardEnabled = false; return; }
 
   // Animations + Discrete LEDs TF state
-  if (u == "HELLO" || u == "GOODBYE") return;
+  if (u == "HELLO") return;
+  if (u == "GOODBYE") { boardStateActive=false; return; }
   if (u.startsWith("MODE:")) u = u.substring(5);
   if (u.startsWith("ANS:"))  u = u.substring(4);
 
@@ -416,7 +521,7 @@ void setup(){
 
   // Serial & randomness
   Serial.begin(115200);
-  line.reserve(160);
+  line.reserve(256);
   randomSeed(analogRead(0));
 
   // Keyboard buttons
@@ -434,7 +539,7 @@ void loop(){
     char c = (char)Serial.read();
     if (c=='\r') continue;
     if (c=='\n'){ handleCmd(line); line=""; }
-    else if (line.length() < 150){ line+=c; }
+    else if (line.length() < 255){ line+=c; }
   }
 
   // poll buttons
