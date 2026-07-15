@@ -48,6 +48,7 @@ La idea para la siguiente versión es que la pantalla inicial ya no muestre las 
 - `LEDStrip_Animations_Serial_v1g_DiscreteLEDs_Flash6_fix3.ino` - Arduino sketch for the LED strip, discrete indicator LEDs, serial command handling, and four physical buttons.
 - `PregsTodos.json` - Question/content pack. Current contents: 66 multiple-choice questions, 55 true/false questions, 1 fortune card, and 1 bad-luck card.
 - `QuestionPacks/` - Editable image-aware question packs, their source images, and a reusable package builder.
+- `PackagedApp/` - Portable stable app with runtime assets, firmware, instructions, and the latest question pack.
 - `Instructivo Trivia.pdf` - User-facing guide/instruction document.
 
 ## How The Pieces Fit Together
@@ -238,6 +239,16 @@ To rebuild a package in PowerShell:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\QuestionPacks\build-pack.ps1 `
   -SourceDirectory .\QuestionPacks\MujeresCiencia `
   -OutputFile .\QuestionPacks\MujeresCiencia.idmquiz
+```
+
+## Packaged App
+
+`PackagedApp/` is the copy-ready distribution for the game computer. Open `PackagedApp/Abrir_IdM_Trivia.cmd`, import `PackagedApp/QuestionPacks/MujeresCiencia.idmquiz`, and connect the board from Microsoft Edge. The packaged browser app has no Node.js or Internet dependency.
+
+Refresh the distribution after changing the app, runtime SVG files, firmware, guide, or question pack:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build-packaged-app.ps1
 ```
 
 ## Development Notes
