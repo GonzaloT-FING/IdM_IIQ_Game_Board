@@ -1,0 +1,21 @@
+{
+  "name": "idm-iiq-game-board",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Development tooling for the IdM IIQ browser and Arduino game board.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "vite": "^8.1.4",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

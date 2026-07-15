@@ -1,0 +1,28 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Local temp and backup files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Arduino build output
+build/
+*.elf
+*.hex
+*.bin
+
+# Node.js development tooling
+node_modules/
+.npm-cache/
+dist/
+playwright-report/
+test-results/
+blob-report/

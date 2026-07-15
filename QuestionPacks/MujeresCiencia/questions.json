@@ -1,0 +1,62 @@
+{
+  "format": "idm-trivia-pack",
+  "schemaVersion": 2,
+  "mc": [
+    {
+      "id": "MARIE_CURIE_Q1",
+      "prompt": "¿Cuál fue uno de los principales aportes científicos de Marie Curie?",
+      "options": [
+        "El desarrollo de la teoría de la evolución",
+        "El descubrimiento del radio y el polonio",
+        "La invención de la penicilina",
+        "El descubrimiento de la estructura del ADN"
+      ],
+      "correctIndex": 1,
+      "explanation": "Marie Curie fue pionera en el estudio de la radiactividad y descubrió, junto con Pierre Curie, los elementos radio y polonio.",
+      "image": {
+        "path": "images/MARIE_CURIE_Q1.jpg",
+        "alt": "Retrato de Marie Curie"
+      }
+    },
+    {
+      "id": "ROSALIND_FRANKLIN_Q2",
+      "prompt": "¿Qué aporte realizó Rosalind Franklin al estudio del ADN?",
+      "options": [
+        "Obtuvo imágenes que permitieron comprender su estructura",
+        "Descubrió las primeras células humanas",
+        "Inventó el microscopio electrónico",
+        "Desarrolló la primera vacuna contra la viruela"
+      ],
+      "correctIndex": 0,
+      "explanation": "Rosalind Franklin utilizó difracción de rayos X para obtener imágenes del ADN, entre ellas la famosa Fotografía 51, fundamental para determinar su estructura de doble hélice.",
+      "image": {
+        "path": "images/ROSALIND_FRANKLIN_Q2.jpg",
+        "alt": "Retrato de Rosalind Franklin"
+      }
+    }
+  ],
+  "tf": [
+    {
+      "id": "ADA_LOVELACE_TF1",
+      "prompt": "Ada Lovelace escribió un algoritmo pensado para ser ejecutado por una máquina.",
+      "answerTrue": true,
+      "explanation": "Sus notas sobre la máquina analítica de Charles Babbage incluyen un algoritmo, por lo que suele ser considerada una de las primeras programadoras de la historia.",
+      "image": {
+        "path": "images/ADA_LOVELACE_TF1.png",
+        "alt": "Retrato de Ada Lovelace"
+      }
+    },
+    {
+      "id": "KATHERINE_JOHNSON_TF2",
+      "prompt": "Katherine Johnson fue la primera mujer en viajar al espacio.",
+      "answerTrue": false,
+      "explanation": "Katherine Johnson fue una matemática de la NASA cuyos cálculos fueron fundamentales para varias misiones espaciales; la primera mujer en viajar al espacio fue Valentina Tereshkova.",
+      "image": {
+        "path": "images/KATHERINE_JOHNSON_TF2.webp",
+        "alt": "Retrato de Katherine Johnson"
+      }
+    }
+  ],
+  "fortune": [],
+  "bad": []
+}

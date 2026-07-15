@@ -1,0 +1,179 @@
+{
+  "board": {
+    "name": "IdM Board",
+    "shapeCount": 20,
+    "description": "Logical order: 1-4, then the long outer branch 5-11 or short inner branch 16-20, convergence at 12, and final path 13-15.",
+    "finishCase": 15,
+    "convergenceCase": 12,
+    "routes": {
+      "short": [1, 2, 3, 4, 16, 17, 18, 19, 20, 12, 13, 14, 15],
+      "long": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    "cases": [
+      {
+        "id": 1,
+        "svgId": "case-1",
+        "name": "Inicio",
+        "path": "start",
+        "ledCount": 14,
+        "ledRole": "start"
+      },
+      {
+        "id": 2,
+        "svgId": "case-2",
+        "name": "Casilla 2",
+        "path": "start",
+        "ledCount": 8,
+        "ledRole": "main"
+      },
+      {
+        "id": 3,
+        "svgId": "case-3",
+        "name": "Casilla 3",
+        "path": "start",
+        "ledCount": 12,
+        "ledRole": "main"
+      },
+      {
+        "id": 4,
+        "svgId": "case-4",
+        "name": "Bifurcación",
+        "path": "branch-point",
+        "ledCount": 12,
+        "ledRole": "decision",
+        "branchChoices": {
+          "up": "short-branch",
+          "down": "long-branch"
+        }
+      },
+      {
+        "id": 5,
+        "svgId": "case-5",
+        "name": "Rama larga 1",
+        "path": "long-branch",
+        "ledCount": 11,
+        "ledRole": "long"
+      },
+      {
+        "id": 6,
+        "svgId": "case-6",
+        "name": "Rama larga 2",
+        "path": "long-branch",
+        "ledCount": 12,
+        "ledRole": "long"
+      },
+      {
+        "id": 7,
+        "svgId": "case-7",
+        "name": "Rama larga 3",
+        "path": "long-branch",
+        "ledCount": 11,
+        "ledRole": "long"
+      },
+      {
+        "id": 8,
+        "svgId": "case-8",
+        "name": "Rama larga 4",
+        "path": "long-branch",
+        "ledCount": 11,
+        "ledRole": "long"
+      },
+      {
+        "id": 9,
+        "svgId": "case-9",
+        "name": "Rama larga 5",
+        "path": "long-branch",
+        "ledCount": 11,
+        "ledRole": "long"
+      },
+      {
+        "id": 10,
+        "svgId": "case-10",
+        "name": "Rama larga 6",
+        "path": "long-branch",
+        "ledCount": 12,
+        "ledRole": "long"
+      },
+      {
+        "id": 11,
+        "svgId": "case-11",
+        "name": "Rama larga 7",
+        "path": "long-branch",
+        "ledCount": 12,
+        "ledRole": "long"
+      },
+      {
+        "id": 12,
+        "svgId": "case-12",
+        "name": "Convergencia",
+        "path": "final",
+        "ledCount": 12,
+        "ledRole": "merge"
+      },
+      {
+        "id": 13,
+        "svgId": "case-13",
+        "name": "Tramo final 1",
+        "path": "final",
+        "ledCount": 11,
+        "ledRole": "final"
+      },
+      {
+        "id": 14,
+        "svgId": "case-14",
+        "name": "Tramo final 2",
+        "path": "final",
+        "ledCount": 8,
+        "ledRole": "final"
+      },
+      {
+        "id": 15,
+        "svgId": "case-15",
+        "name": "Meta",
+        "path": "final",
+        "ledCount": 17,
+        "ledRole": "finish"
+      },
+      {
+        "id": 16,
+        "svgId": "case-16",
+        "name": "Rama corta 1",
+        "path": "short-branch",
+        "ledCount": 7,
+        "ledRole": "short"
+      },
+      {
+        "id": 17,
+        "svgId": "case-17",
+        "name": "Rama corta 2",
+        "path": "short-branch",
+        "ledCount": 8,
+        "ledRole": "short"
+      },
+      {
+        "id": 18,
+        "svgId": "case-18",
+        "name": "Rama corta 3",
+        "path": "short-branch",
+        "ledCount": 9,
+        "ledRole": "short"
+      },
+      {
+        "id": 19,
+        "svgId": "case-19",
+        "name": "Rama corta 4",
+        "path": "short-branch",
+        "ledCount": 8,
+        "ledRole": "short"
+      },
+      {
+        "id": 20,
+        "svgId": "case-20",
+        "name": "Rama corta 5",
+        "path": "short-branch",
+        "ledCount": 7,
+        "ledRole": "short"
+      }
+    ]
+  }
+}
